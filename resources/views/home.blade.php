@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    You are logged in! This page should show all the contracts.
                 </div>
             </div>
             <form action="{{route('lalatask')}}">
