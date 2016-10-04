@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -24,6 +24,7 @@
             margin-right: 6px;
         }
     </style>
+    
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default navbar-static-top">
@@ -40,7 +41,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel
+                    AsURent
                 </a>
             </div>
 
@@ -49,6 +50,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Home</a></li>
                     <li><a href="{{ route('lalatask') }}">Tasks</a></li>
+                    <li><a href="{{ url('/contracts') }}">Contract</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<?php
+    echo "Helloo??";
+
+?>
     <div class="container">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
@@ -54,6 +58,7 @@
                                 @foreach ($tasks as $task)
                                     <tr>
                                        {{$task->name}}
+                                      
                                         <td class="table-text"><div>{{ $task->name }}</div></td>
 
                                         <!-- Task Delete Button -->

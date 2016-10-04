@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model
 {
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description','address','start_date','end_date'];
     
-    public function user()
+    /*public function user()
     {
-        return $this->belongsTo(User::class);
+        return;
+    }*/
+    
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class); 
     }
+     
 }

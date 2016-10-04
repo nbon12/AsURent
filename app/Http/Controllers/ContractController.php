@@ -23,6 +23,7 @@ class ContractController extends Controller
     public function __construct(ContractRepository $contracts)
     {
         $this->middleware('auth');
+        //TODO: auth for contracts
         $this->contracts = $contracts;
         
     }
@@ -34,9 +35,9 @@ class ContractController extends Controller
      */
      public function index(Request $request)
      {
-         
+         $contr = $request->user()->contracts()->get();
          return view('contracts.index', [
-             'contracts' => $this->contracts->forUser($request->user()),
+             'contracts' => $contr
              ]);
              
      }
@@ -47,11 +48,18 @@ class ContractController extends Controller
              'name' => 'required|max:255',
         ]);
         
-        $request->user()->contracts()->create([
+        /*$request->contracts()->create([
             'name' => $request->name,
             'description' => $request->description,
-            ]);
-            
+            ]);*/
+        $cont = new Contract;
+        $cont -> name = $request -> name;
+        $cont -> description = $request -> description;
+        $cont -> base_rate = $request -> base_rate;
+        $cont -> landlord_id = $request -> user() -> id;
+
+        $cont -> save();
+        
         return redirect('/contracts');
      }
      /**
@@ -69,6 +77,8 @@ class ContractController extends Controller
         $contract->delete();
         return redirect('/contracts');
         */
+        
+        //TODO: authorization for contract manipulation
         $this->authorize('destroy', $contract); 
         $contract->delete();
         

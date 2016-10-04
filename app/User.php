@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -12,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'phone', 'mailing_address'
     ];
 
     /**
@@ -36,7 +37,12 @@ class User extends Authenticatable
       */
       public function contracts()
       {
-          return $this->hasMany(Contract::class);
+          $contractsll = DB::table('contracts')->where('landlord_id', '=', $this->id);
+          
+          //NOTE: add this and return $contracts for all contracts tenant or landlord
+          //$contracts = DB::table('contracts')->where('tenant_id', '=', $this->id)->union($contractsll);
+          
+          return $contractsll;
       }
     
 }
