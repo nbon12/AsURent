@@ -20,6 +20,6 @@ class ContractPolicy
     public function destroy(User $user, Contract $contract)
     {
         //return true;
-        return $user->id == $contract->user_id;
+        return $user->id == $contract->landlord_id;
     }
 }

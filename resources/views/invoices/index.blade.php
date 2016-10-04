@@ -7,10 +7,10 @@
     
 
     <!-- TODO: Current Tasks -->
-    @if (count($contracts) >= 0)
+    @if (count($invoices) >= 0)
         <div class="row panel panel-default">
             <div class="panel-heading">
-                Current Contracts
+                Current invoices
             </div>
 
             <div class="panel-body">
@@ -18,22 +18,23 @@
 
                     <!-- Table Headings -->
                     <thead>
-                        <th>Contract</th>
-                        <th>Description</th>
-                        <th>Rent</th>
+                        <th>Created</th>
+                        <th>Due</th>
+                        <th>Total</th>
+                        <th>Status</th>
                         <th>&nbsp;</th>
                     </thead>
 
                     <!-- Table Body -->
                     <tbody>
-                        @foreach ($contracts as $contract)
+                        @foreach ($invoices as $invoice)
                             <tr>
                                 <!-- Task Name -->
                                 <td class="table-text">
-                                    <div>{{ $contract->name }}</div>
+                                    <div>{{ $invoice->created_at }}</div>
                                 </td>
                                 <td class="table-text">
-                                    <div>{{ $contract->description }}</div>
+                                    <div>{{ $invoice->due_date }}</div>
                                 </td>
                                 <td class="table-text">
                                     <div>{{ $contract->base_rate }}</div>
@@ -41,13 +42,13 @@
 
                                 <td>
                                     <!-- Delete Button -->
-                                    <form action="{{ url('contract/'.$contract->id) }}" method="POST">
+                                    <form action="{{ url('invoices/'.$contract->id.'/'.$invoice->id) }}" method="POST">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}
-                                        <a href="{{ url('invoices/'.$contract->id) }}" class="btn btn-success" role="button">
-                                            Invoices
+                                        <a href="{{ url('invoice/'.$contract->id.'/'.$invoice->id) }}" class="btn btn-success" role="button">
+                                            View
                                         </a>
-                                        <button type="submit" id="delete-task-{{ $contract->id }}" class="btn btn-danger">
+                                        <button type="submit" id="delete-invoice-{{ $invoice->id }}" class="btn btn-danger">
                                             <i class="fa fa-btn fa-trash"></i>Delete
                                         </button>
                                         
@@ -61,38 +62,24 @@
         </div>
         
         <div class="row">
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add"><i class="fa fa-plus"></i> Add Contract</button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add"><i class="fa fa-plus"></i> Add invoice</button>
         </div>
         <div class="row panel-body collapse" id="add">
         <!-- Display Validation Errors -->
         @include('common.errors')
 
         <!-- New Task Form -->
-        <form action="{{ url('contracts') }}" method="POST" class="form-horizontal">
+        <form action="{{ url('invoices/'.$contract->id) }}" method="POST" class="form-inline">
             {{ csrf_field() }}
 
             <!-- Task Name -->
             <div class="form-group">
-            <div class="form-row">
-                
-                
-                <div class="col-sm-6">
-                    <label for="contract-name" class="col-sm-12">Name:</label>
-                    <input type="text" name="name" id="contract-name" class="form-control">
+                <div class="input-group date">
+                    <input type="text" class="form-control" value="12-02-2016" id="due" name="due_date">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
                 </div>
-                
-                
-                <div class="col-sm-6">
-                    <label for="contract-description" class="col-sm-12">Description:</label>
-                    <input type="text" name="description" id="contract-description" class="form-control">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col sm-6" align="right">
-                    <label for="contract-rent" class="col-sm-12">Monthly Rent:</label>
-                    <input type="number" name="base_rate" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency" id="contract-base_rate">
-                </div>
-            </div>
             </div>
 
             <!-- Add Task Button -->

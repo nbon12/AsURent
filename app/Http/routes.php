@@ -20,6 +20,12 @@ Route::group(['middleware' => ['web']], function() {
     });
     
     Route::auth();
+    
+    Route::get('/invoices/{contract}', 'InvoiceController@index')->name('invoiceindex');
+    Route::post('/invoices/{contract}', 'InvoiceController@store')->name('invoicestore');
+    Route::delete('/invoices/{contract}/{invoice}', 'InvoiceController@destroy')->name('invoicedestroy');
+    
+    Route::get('/invoice/{contract}/{invoice}', 'InvoiceController@individual');
 
     Route::get('/home', 'HomeController@index');
     Route::get('/tasks', 'TaskController@index')->name('lalatask');
@@ -41,6 +47,7 @@ Route::group(['middleware' => ['web']], function() {
         /*Route::post('/task', function(Request $request) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255',
+                //'tenantname' => 'required'
             ]);
     
             if ($validator->fails()) {
@@ -51,6 +58,7 @@ Route::group(['middleware' => ['web']], function() {
             }
             $task = new Task;
             $task->name = $request->name;
+            $task->tenantname = $request->gabe;
             $task->save();
             //return redirect('/');
             return redirect()->route('lalatask');
