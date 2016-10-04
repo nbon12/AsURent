@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    testing change!
                 </div>
             </div>
             <form action="{{route('lalatask')}}">
