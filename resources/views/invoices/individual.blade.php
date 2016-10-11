@@ -77,6 +77,45 @@
     				</div>
     			</div>
     		</div>
+    	
+    	<div class="row">
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add"><i class="fa fa-plus"></i> Add Item</button>
+        </div>
+        <div class="row panel-body collapse" id="add">
+        <!-- Display Validation Errors -->
+        @include('common.errors')
+
+        <!-- New Task Form -->
+        <form action="{{ url('invoice/'.$contract->id.'/'.$invoice->id) }}" method="POST" class="form-horizontal">
+            {{ csrf_field() }}
+
+            <!-- Task Name -->
+            <div class="form-group">
+                <div class="form-row">
+                    
+                    <div class="col-sm-6">
+                        <label for="item-name" class="col-sm-12">Item:</label>
+                        <input type="text" name="desc" id="item-name" class="form-control">
+                    </div>
+                    
+                    
+                    <div class="col-sm-6">
+                        <label for="item-value" class="col-sm-12">Value:</label>
+                        <input type="number" name="value" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency form-control" id="item-value">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Task Button -->
+            <div class="form-group">
+                <div align="center">
+                    <button type="submit" class="btn btn-default">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     	</div>
     </div>
 </div>

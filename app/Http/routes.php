@@ -24,9 +24,9 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/invoices/{contract}', 'InvoiceController@index')->name('invoiceindex');
     Route::post('/invoices/{contract}', 'InvoiceController@store')->name('invoicestore');
     Route::delete('/invoices/{contract}/{invoice}', 'InvoiceController@destroy')->name('invoicedestroy');
-    
     Route::get('/invoice/{contract}/{invoice}', 'InvoiceController@individual');
-
+    Route::post('/invoice/{contract}/{invoice}', 'InvoiceController@storeItem');
+    
     Route::get('/home', 'HomeController@index');
     Route::get('/tasks', 'TaskController@index')->name('lalatask');
     Route::post('/tasks', 'TaskController@store');

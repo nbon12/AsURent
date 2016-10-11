@@ -57,6 +57,7 @@ class ContractController extends Controller
         $cont -> description = $request -> description;
         $cont -> base_rate = $request -> base_rate;
         $cont -> landlord_id = $request -> user() -> id;
+        $cont -> tenant_id = $request -> user() -> id;
 
         $cont -> save();
         
