@@ -61,7 +61,8 @@ class InvoiceController extends Controller
              'tenant' => User::findOrFail($contract->tenant_id),
              'landlord' => User::findOrFail($contract->landlord_id),
              'items' => $items,
-             'total' => $total
+             'total' => $total,
+             'contract' => $contract
              ]);
      }
      
@@ -82,6 +83,17 @@ class InvoiceController extends Controller
         $item -> save();
         
         return redirect('/invoices/'.$contract->id);
+     }
+     
+     public function storeItem(Request $request, Contract $contract, Invoice $invoice)
+     {
+         $item = new Item;
+         $item -> description = $request -> desc;
+         $item -> invoice_id =  $invoice -> id;
+         $item -> value = $request -> value;
+         $item -> save();
+         
+         return redirect('/invoice/'.$contract -> id.'/'.$invoice -> id);
      }
      /**
       * Destroy the given Invoice.
