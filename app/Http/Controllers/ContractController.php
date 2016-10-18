@@ -57,11 +57,27 @@ class ContractController extends Controller
         $cont -> description = $request -> description;
         $cont -> base_rate = $request -> base_rate;
         $cont -> landlord_id = $request -> user() -> id;
-        $cont -> tenant_id = $request -> user() -> id;
+        $cont -> tenant_id = $cont->setTenant($request -> tenant);
 
         $cont -> save();
         
         return redirect('/contracts');
+     }
+     public function editForm(Request $request, Contract $contract)
+     {
+         return view('contracts.edit', [
+            'contract' => $contract 
+            ]);
+     }
+     public function edit(Request $request, Contract $contract)
+     {
+         $contract -> name = $request -> name;
+         $contract -> description = $request -> description;
+         $contract -> base_rate = $request -> base_rate;
+         
+         $contract -> save();
+         
+         return redirect('/contracts');
      }
      /**
       * Destroy the given contract.
