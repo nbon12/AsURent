@@ -31,7 +31,7 @@
                             <tr>
                                 <!-- Task Name -->
                                 <td class="table-text">
-                                    <div>{{ $invoice->created_at }}</div>
+                                    <div>{{ $invoice->created_at->format('Y-m-d') }}</div>
                                 </td>
                                 <td class="table-text">
                                     <div>{{ $invoice->due_date }}</div>
@@ -74,11 +74,9 @@
 
             <!-- Task Name -->
             <div class="form-group">
-                <div class="input-group date">
-                    <input type="text" class="form-control" value="12-02-2016" id="due" name="due_date">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
+                <div class="input-group">
+                    <label for="due" class="col-sm-12">Due Date:</label>
+                    <input type="date" class="form-control" id="due" name="due_date">
                 </div>
             </div>
 

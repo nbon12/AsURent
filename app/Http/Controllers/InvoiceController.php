@@ -61,7 +61,8 @@ class InvoiceController extends Controller
              'tenant' => User::findOrFail($contract->tenant_id),
              'landlord' => User::findOrFail($contract->landlord_id),
              'items' => $items,
-             'total' => $total
+             'total' => $total,
+             'contract' => $contract
              ]);
      }
      
@@ -70,7 +71,7 @@ class InvoiceController extends Controller
 
         $inv = new Invoice;
         $inv -> contract_id = $contract -> id;
-        $inv -> due_date = date('Y-m-d H:i:s');
+        $inv -> due_date = $request -> due_date;
         $inv -> enabled = 1;
         $inv -> paid = 0;
         $inv -> save();
@@ -82,6 +83,17 @@ class InvoiceController extends Controller
         $item -> save();
         
         return redirect('/invoices/'.$contract->id);
+     }
+     
+     public function storeItem(Request $request, Contract $contract, Invoice $invoice)
+     {
+         $item = new Item;
+         $item -> description = $request -> desc;
+         $item -> invoice_id =  $invoice -> id;
+         $item -> value = $request -> value;
+         $item -> save();
+         
+         return redirect('/invoice/'.$contract -> id.'/'.$invoice -> id);
      }
      /**
       * Destroy the given Invoice.
@@ -105,4 +117,13 @@ class InvoiceController extends Controller
         
         return redirect('/invoices/' . $contract->id);
      }
+     
+     public function destroyItem(Request $request, Contract $contract, Invoice $invoice, Item $item)
+     {
+        $item->delete();
+        return redirect('/invoice/' . $contract->id . '/' . $invoice->id);
+     }
+     
+     
+     
 }

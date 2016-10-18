@@ -53,17 +53,34 @@
     						<thead>
                                 <tr>
         							<td><strong>Item</strong></td>
-        							<td class="text-center"><strong>Price</strong></td>
-        							<td class="text-right"><strong>Totals</strong></td>
+        							<td class="text-center"></td>
+    								<td class="text-center"></td>
+        							<td class="text-right"><strong>Value</strong></td>
                                 </tr>
     						</thead>
     						<tbody>
     							@foreach ($items as $item)
     							<tr>
-    								<td>{{$item->description}}</td>
+    								<td>
+    								    {{$item->description}}
+    							    </td>
     								<td class="text-center"></td>
     								<td class="text-center"></td>
-    								<td class="text-right">${{$item->value}}</td>
+                                    <td class= "text-right">
+                                        ${{$item->value}}
+                                    </td>
+    								<td class="text-center">
+    					                <form class="form-inline" action="{{ url('invoice/'.$contract->id.'/'.$invoice->id.'/'.$item->id) }}" method="POST">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fa fa-btn fa-trash"></i>
+                                            </button>
+                                            
+                                        </form>
+    								</td>
+    								
     							</tr>
                                 @endforeach
     							<tr>
@@ -77,6 +94,45 @@
     				</div>
     			</div>
     		</div>
+    	
+    	<div class="row">
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add"><i class="fa fa-plus"></i> Add Item</button>
+        </div>
+        <div class="row panel-body collapse" id="add">
+        <!-- Display Validation Errors -->
+        @include('common.errors')
+
+        <!-- New Task Form -->
+        <form action="{{ url('invoice/'.$contract->id.'/'.$invoice->id) }}" method="POST" class="form-horizontal">
+            {{ csrf_field() }}
+
+            <!-- Task Name -->
+            <div class="form-group">
+                <div class="form-row">
+                    
+                    <div class="col-sm-6">
+                        <label for="item-name" class="col-sm-12">Item:</label>
+                        <input type="text" name="desc" id="item-name" class="form-control">
+                    </div>
+                    
+                    
+                    <div class="col-sm-6">
+                        <label for="item-value" class="col-sm-12">Value:</label>
+                        <input type="number" name="value" value="1000" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency form-control" id="item-value">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Task Button -->
+            <div class="form-group">
+                <div align="center">
+                    <button type="submit" class="btn btn-default">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     	</div>
     </div>
 </div>
