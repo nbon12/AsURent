@@ -13,7 +13,7 @@
 
 use App\Task;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Input;
 Route::group(['middleware' => ['web']], function() {
     Route::get('/', function() {
         return view('welcome');
@@ -42,8 +42,17 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/contract/{contract}', 'ContractController@editForm');
     Route::post('/contract/{contract}', 'ContractController@edit');
     
+    Route::get('/stripeconnect', function(){
+            //$error = Input::get("error");
+            //$error_description = Input::get("error_description");
+            //TODO: sanitize the Input? or does the input get method already sanitize it? 
+            dd(Input::get("code"));
+    
+        })->name('stripe_redirect_uri');
+    
     /* Routes protected by authenication middleware */
     Route::group(['middleware' => ['auth']], function() {
+        
         /* Route::get('/tasks', function() {
             return view('tasks', [
                 'tasks' => Task::orderBy('created_at', 'asc')->get()
