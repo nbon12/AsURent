@@ -18,4 +18,5 @@ class ContractRepository
                     ->orderBy('created_at', 'asc')
                     ->get();
     }
+    
 }

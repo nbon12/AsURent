@@ -26,7 +26,7 @@
 
                     <!-- Table Body -->
                     <tbody>
-                        @foreach ($contracts as $contract)
+                        @foreach($contracts as $contract)
                             <tr>
                                 <!-- Task Name -->
                                 <td class="table-text">
@@ -47,12 +47,14 @@
                                         <a href="{{ url('invoices/'.$contract->id) }}" class="btn btn-success" role="button">
                                             Invoices
                                         </a>
+                                        <a href="{{ url('contract/'.$contract->id) }}" class="btn btn-warning" role="button"><i class="fa fa-pencil-square-o"></i>Edit</a>
                                         <button type="submit" id="delete-task-{{ $contract->id }}" class="btn btn-danger">
                                             <i class="fa fa-btn fa-trash"></i>Delete
                                         </button>
                                         
                                     </form>
                                 </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -88,9 +90,13 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="col sm-6" align="right">
+                <div class="col-sm-6">
+                    <label for="contract-tenant" class="col-sm-12">Tenant Email:</label>
+                    <input type="email" name="tenant" class="form-control" id="contract-tenant">
+                </div>
+                <div class="col-sm-6">
                     <label for="contract-rent" class="col-sm-12">Monthly Rent:</label>
-                    <input type="number" name="base_rate" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency" id="contract-base_rate">
+                    <input type="number" name="base_rate" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency form-control" id="contract-base_rate">
                 </div>
             </div>
             </div>

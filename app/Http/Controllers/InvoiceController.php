@@ -71,7 +71,7 @@ class InvoiceController extends Controller
 
         $inv = new Invoice;
         $inv -> contract_id = $contract -> id;
-        $inv -> due_date = date('Y-m-d H:i:s');
+        $inv -> due_date = $request -> due_date;
         $inv -> enabled = 1;
         $inv -> paid = 0;
         $inv -> save();
@@ -117,4 +117,13 @@ class InvoiceController extends Controller
         
         return redirect('/invoices/' . $contract->id);
      }
+     
+     public function destroyItem(Request $request, Contract $contract, Invoice $invoice, Item $item)
+     {
+        $item->delete();
+        return redirect('/invoice/' . $contract->id . '/' . $invoice->id);
+     }
+     
+     
+     
 }

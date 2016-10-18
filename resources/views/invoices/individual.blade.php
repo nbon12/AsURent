@@ -53,17 +53,34 @@
     						<thead>
                                 <tr>
         							<td><strong>Item</strong></td>
-        							<td class="text-center"><strong>Price</strong></td>
-        							<td class="text-right"><strong>Totals</strong></td>
+        							<td class="text-center"></td>
+    								<td class="text-center"></td>
+        							<td class="text-right"><strong>Value</strong></td>
                                 </tr>
     						</thead>
     						<tbody>
     							@foreach ($items as $item)
     							<tr>
-    								<td>{{$item->description}}</td>
+    								<td>
+    								    {{$item->description}}
+    							    </td>
     								<td class="text-center"></td>
     								<td class="text-center"></td>
-    								<td class="text-right">${{$item->value}}</td>
+                                    <td class= "text-right">
+                                        ${{$item->value}}
+                                    </td>
+    								<td class="text-center">
+    					                <form class="form-inline" action="{{ url('invoice/'.$contract->id.'/'.$invoice->id.'/'.$item->id) }}" method="POST">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fa fa-btn fa-trash"></i>
+                                            </button>
+                                            
+                                        </form>
+    								</td>
+    								
     							</tr>
                                 @endforeach
     							<tr>
@@ -101,7 +118,7 @@
                     
                     <div class="col-sm-6">
                         <label for="item-value" class="col-sm-12">Value:</label>
-                        <input type="number" name="value" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency form-control" id="item-value">
+                        <input type="number" name="value" value="1000" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency form-control" id="item-value">
                     </div>
                 </div>
             </div>
