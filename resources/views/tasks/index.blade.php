@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Bootstrap Boilerplate... -->
-
+<div class="container">
     <div class="panel-body">
         <!-- Display Validation Errors -->
         @include('common.errors')
@@ -73,5 +73,6 @@
                 </table>
             </div>
         </div>
+    </div>
     @endif
 @endsection
