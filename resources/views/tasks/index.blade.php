@@ -3,7 +3,8 @@
 @section('content')
 
     <!-- Bootstrap Boilerplate... -->
-
+    <div class="container">
+<div class="row">
     <div class="panel-body">
         <!-- Display Validation Errors -->
         @include('common.errors')
@@ -31,8 +32,10 @@
             </div>
         </form>
     </div>
-
+</div>
     <!-- TODO: Current Tasks -->
+    
+<div class="row">
     @if (count($tasks) > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -73,5 +76,7 @@
                 </table>
             </div>
         </div>
+        </div>
+    </div>
     @endif
 @endsection

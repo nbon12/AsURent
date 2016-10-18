@@ -33,16 +33,17 @@ class User extends Authenticatable
      }
      
      /**
-      * Get all contracts for the user.
+      * Get all contracts for the user where user is landlord of.
+      * Get all contracts for the user where user is tenant of.
       */
       public function contracts()
       {
           $contractsll = DB::table('contracts')->where('landlord_id', '=', $this->id);
-          
+          $contractsll->tenant = DB::table('contracts')->where('tenant_id', '=', $this->id);
           //NOTE: add this and return $contracts for all contracts tenant or landlord
           //$contracts = DB::table('contracts')->where('tenant_id', '=', $this->id)->union($contractsll);
-          
+          //dd($contractsll->description);
           return $contractsll;
       }
-    
+     
 }

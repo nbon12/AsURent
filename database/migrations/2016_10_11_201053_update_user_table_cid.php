@@ -6,7 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 class UpdateUserTableCid extends Migration
 {
     /**
-     * For Stripe purposes: Extend user table to have account_id, private_key, public_key,
+     * Prepares the database for Stripe managed accounts.
+     * Extend user table to have account_id, private_key, public_key,
      * and (just in case) customer_id.
      * 
      * These keys are private information and must not be leaked.
@@ -19,16 +20,16 @@ class UpdateUserTableCid extends Migration
     {
         Schema::table('users', function($table){
            $table -> date('date_of_birth')->nullable(); //optional
-           $table -> string('stripe_account_id');
-           $table -> string('stripe_private_key');
-           $table -> string('stripe_public_key');
-           $table -> string('stripe_customer_id'); //in case we would want to store this.
+           $table -> string('stripe_account_id')->nullable();
+           $table -> string('stripe_private_key')->nullable();
+           $table -> string('stripe_public_key')->nullable();
+           $table -> string('stripe_customer_id')->nullable(); //in case we would want to store this.
            
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the Stripe preparations.
      *
      * @return void
      */
