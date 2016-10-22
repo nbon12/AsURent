@@ -15,6 +15,12 @@ class UsersTableSeeder extends Seeder
                 'name' => 'happy',
                 'email' => str_random(10).'@gmail.com',
                 'password' => bcrypt('squalid'),
-            ]);
+        ]);
+        DB::table('users')->insert([
+                'name' => 'nick',
+                'email' => 'nick@nick.nick',
+                'password' => bcrypt(env('NICK_PASSWORD', 'password')),
+        ]);
+        
     }
 }
