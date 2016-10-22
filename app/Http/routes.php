@@ -14,6 +14,7 @@
 use App\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use App\User;
 Route::group(['middleware' => ['web']], function() {
     Route::get('/', function() {
         return view('welcome');
@@ -41,7 +42,7 @@ Route::group(['middleware' => ['web']], function() {
     
     Route::get('/contract/{contract}', 'ContractController@editForm');
     Route::post('/contract/{contract}', 'ContractController@edit');
-    
+    Route::post('/payOnce', 'SubscriptionController@payOnce');
     Route::get('/stripeconnect', function(){
             $error = Input::get("error");
             $error_description = Input::get("error_description");
@@ -60,8 +61,141 @@ Route::group(['middleware' => ['web']], function() {
             dd($code);
             
     
-        })->name('stripe_redirect_uri');
+    })->name('stripe_redirect_uri');
+    Route::get('/testrequest', function(Request $request){
+       //dd( $request); 
+    });
+    Route::post('/plaidlink', function(Request $request){
+        //dd($request);
+        $client_id = env('PLAID_ID');
+        $secret = env('PLAID_SECRET');
+        $public_token = $request->public_token;
+        
+        
+        //Okay, now we have the public_token...
+        $user = User::where('email', 'tenantA@tenant.com')->first();
+        
+        Stripe\Stripe::setApiKey("sk_test_d2cVtC0PBfdGBjPAhHNJ4FeK");
+        $stripe_customer = Stripe\Customer::create(array(
+            "description" => $user->name,
+            "email" => $user->email
+        ));
+        
+        $user->stripe_id = $stripe_customer->id;
+        $user->save();
+        
+        
+        
+        
+        Stripe\Charge::create(array(
+            "amount" => 2999,
+            "currency" => "usd",
+            "customer" => $user->stripe_id,
+            "description" => "Payment for Invoice 4321"
+        ));
+        
+    })->name('get_customer_id');
+    Route::get('/chargetenantA', function(){
+        $user = User::where('email', 'tenantA@tenant.com')->first();
+        
+        
+        
+    })->name('chargetenantA');
     
+    Route::post('/plaidcurl', function(Request $request){
+        $temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
+        $public_token = $request->public_token; //from plaid_module
+        $account_id = $request->account_id; //from plaid module
+        //dd($account_id . " ----" . $public_token);
+        //dd($request->public_token);
+        //dd($response->account_id);
+        $url = 'https://tartan.plaid.com/exchange_token';
+        $data = array('client_id' => env('PLAID_ID'), 'secret' => env('PLAID_SECRET'), 'public_token' => $public_token, 'account_id' => $account_id);
+        
+        // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { /* Handle error */ }
+        //Okay now we have the access token, lets print it
+        dd($result);
+        //dd($result);
+        //var_dump($result);
+        //$resp = curl_exec($curl);
+        //dd($resp);
+        
+        
+        
+    })->name('plaidcurlgeneric');
+    Route::get('/plaidcurl2', function(Request $request){
+        $public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
+        //$public_token = $request->public_token; //from plaid_module
+        //$account_id = $request->account_id; //from plaid module
+        $account_id = 1;
+        //dd($request->public_token);
+        //dd($response->account_id);
+        $url = 'https://tartan.plaid.com/exchange_token';
+        $data = array('client_id' => env('PLAID_ID'), 'secret' => env('PLAID_SECRET'), 'public_token' => $public_token, 'account_id' => $account_id);
+        
+        // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { /* Handle error */ }
+        //Okay now we have the access token, lets print it
+        dd($result);
+        //dd($result);
+        //var_dump($result);
+        //$resp = curl_exec($curl);
+        //dd($resp);
+        
+        
+        
+    })->name('plaidcurlgeneric2');
+    Route::get('/cashier_create', function(){
+       
+        $user = User::where('email', 'tenantA@tenant.com')->first();
+        $user->customer_id = null;
+        $user->newSubscription('main', 'monthly')->create($creditCardToken);
+        dd($user);
+        //dd($user);
+        return "cashier_create route ended.";
+    })->name('cashier_create');
+    Route::get('/curltest', function(){
+        $temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
+        //$account_id = $response->account_id;
+        $url = 'https://tartan.plaid.com/exchange_token';
+        $data = array('client_id' => env('PLAID_ID'), 'secret' => env('PLAID_SECRET'), 'public_token' => $temp_public_token, 'account_id' => $account_id);
+        
+        // use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) { /* Handle error */ }
+        //dd($result);
+        //var_dump($result);
+        var_dump($result);
+        //dd($result);
+        
+    });
     /* Routes protected by authenication middleware */
     Route::group(['middleware' => ['auth']], function() {
         

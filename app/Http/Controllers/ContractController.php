@@ -60,7 +60,20 @@ class ContractController extends Controller
         $cont -> tenant_id = $cont->setTenant($request -> tenant);
 
         $cont -> save();
+        //need to create customer id here...
         
+        \Stripe\Stripe::setApiKey("sk_test_KC4D0LWdLrKOyv4S5tDXIXWX");
+        
+        //need to get the stripe tok... get it from stripe.js, let stripe js form point to here.
+        
+        $customer = \Stripe\Customer::create(array(
+          "description" => "Customer for liam.anderson@example.com",
+          "source" => "tok_18zH8sIRPfaQXufG0FjNiqVU" // obtained with Stripe.js
+        ));
+        \Stripe\Subscription::create(array(
+          "customer" => $customer,
+          "plan" => "base"
+        ));
         return redirect('/contracts');
      }
      public function editForm(Request $request, Contract $contract)
