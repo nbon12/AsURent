@@ -55,7 +55,8 @@ Route::group(['middleware' => ['web']], function() {
             //We have the authorization code, good.
             //TODO: sanitize the Input? or does the input get method already sanitize it? 
             //dd(Input::get("code"));
-            //TODO: store all the input
+            //TODO: store the input and set up with laravel Cashier.
+            //TODO: set up laravel cashier
             dd($code);
             
     
