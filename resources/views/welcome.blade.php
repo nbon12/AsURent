@@ -29,7 +29,28 @@
                 </form>
                 
                 <!-- without plaid...-->
+                
                 <script>
+                    //stripe response handler
+                      Stripe.setPublishableKey('pk_test_89jOqsSrEjxCjEotST32cFc9');
+                      var stripeResponseHandler = function(status, response) {
+                          var $form = $('#payment-form');
+                        
+                          if (response.error) {
+                            // Show the errors on the form
+                            $form.find('.payment-errors').text(response.error.message);
+                            $form.find('button').prop('disabled', false);
+                          } else {
+                            // token contains id, last4, and card type
+                            var token = response.id;
+                            // Insert the token into the form so it gets submitted to the server
+                            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+                            // and submit
+                            $form.get(0).submit();
+                      }
+                    };
+                    
+                    
                     //stripe handle submit button
                     $(function() {
                       var $form = $('#payment-form');
@@ -39,14 +60,14 @@
                     
                         // Request a token from Stripe:
                         Stripe.card.createToken($form, stripeResponseHandler);
-                    
+                        console.log("HEllloOOO?");
                         // Prevent the form from being submitted:
                         return false;
                       });
                     });
                     
                 </script>
-                <script type="text/javascript">
+             <!--   <script type="text/javascript">
                     Stripe.setPublishableKey('pk_test_89jOqsSrEjxCjEotST32cFc9');
                     Stripe.bankAccount.createToken({
                       country: $('.country').val(),
@@ -56,30 +77,37 @@
                       account_holder_name: $('.name').val(),
                       account_holder_type: $('.account_holder_type').val()
                     }, stripeResponseHandler);
-                </script>
+                </script>-->
                 <form action="/payOnce" method="POST" id="payment-form">
                       {{csrf_field()}}
                       <span class="payment-errors"></span>
+                      
+                      <div class="form-row">
+                        <label>
+                          <span>Email</span>
+                          <input type="text" name="email">
+                        </label>
+                      </div>
                       <div class="form-row">
                         <label>
                           <span>Card Number</span>
-                          <input type="text" size="20" data-stripe="number">
+                          <input type="text" size="20" data-stripe="number" value="4242424242424242">
                         </label>
                       </div>
                     
                       <div class="form-row">
                         <label>
                           <span>Expiration (MM/YY)</span>
-                          <input type="text" size="2" data-stripe="exp_month">
+                          <input type="text" size="2" data-stripe="exp_month" value="1">
                         </label>
                         <span> / </span>
-                        <input type="text" size="2" data-stripe="exp_year">
+                        <input type="text" size="2" data-stripe="exp_year" value="19">
                       </div>
                     
                       <div class="form-row">
                         <label>
                           <span>CVC</span>
-                          <input type="text" size="4" data-stripe="cvc">
+                          <input type="text" size="4" data-stripe="cvc", value="111">
                         </label>
                       </div>
                       <input type="submit" class="submit" value="Submit Payment">
