@@ -61,19 +61,31 @@ class ContractController extends Controller
         $cont -> tenant_id = $cont->setTenant($request -> tenant);
 
         $cont -> save();
-        //Begin Stripe subscription signup...
-        
+        //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
-        
+        $plan = \Stripe\Plan::create(array(
+          "amount" => $cont->base_rate,
+          "interval" => "month",
+          "name" => $cont->name,
+          "currency" => "usd",
+          "id" => $cont->id)
+        );
+        //get tenant and add to plan
+        $tenant = User::where('id', $cont->tenant_id)->first();
+        //dd($tenant->stripe_customer_id);
+        $subscription = \Stripe\Subscription::create(array(
+            "customer" => $tenant->stripe_customer_id,
+            "plan" => $plan->id
+        ));
+        dd($subscription);
         //
         //$customer = \Stripe\Customer::create(array(
         //  "description" => "Customer for AsURent",
         //  "source" => null // will be replaced with btok...
         //));
         //dd($customer->id);
-        $user = User::where('id', $cont->tenant_id)->first();
         
-        $user->newSubscription('main', 'monthly')->create($creditCardToken);
+        
         //dd($customer);
         return redirect('/contracts');
      }

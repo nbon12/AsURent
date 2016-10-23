@@ -63,10 +63,17 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+        \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
+        //set this user as a customer of AsURent.
+        $customer = \Stripe\Customer::create(array(
+            "description" => "Customer for james.smith@example.com",
+            "source" => null // to be changed to btok...
+        ));
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'stripe_customer_id' => $customer->id
         ]);
     }
 }

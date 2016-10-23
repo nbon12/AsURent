@@ -10,15 +10,20 @@ class User extends Authenticatable
 {
     use Billable;
     //TODO: possible constructor to make all users automatically get a stripe customer id?
-    public function __construct(User $user)
+    /*
+    public function __construct()
     {
+        /*
+        \Stripe\Stripe::setApiKey(env("ASURENT_STRIPE_SECRET"));
         $customer = \Stripe\Customer::create(array(
-          "description" => "Customer for AsURent",
+          "description" => "Constructed Customer for AsURent",
           "source" => null // will be replaced with btok...
         ));
         $user->'stripe_customer_id' = $customer->id;
+        $user->save();
+        
     }
-    
+    */
     /**
      * The attributes that are mass assignable.
      *
