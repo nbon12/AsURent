@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{asset('css/css.css')}}"/>
     
     <!--java script -->
+     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
      <script type="text/javascript" src="{{asset('js/site.js')}}"></script>
 
     <style>
@@ -30,8 +31,11 @@
     
 </head>
 <body id="app-layout">
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
+    
+    
+    
+    <nav class="navbar navbar-default navbar-static-top navStyle">
+        <div>
             <div class="navbar-header">
 
                 <!-- Collapsed Hamburger -->
@@ -42,27 +46,28 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    AsURent
-                </a>
             </div>
 
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
-                    <li><a href="{{ route('lalatask') }}">Tasks</a></li>
-                    <li><a href="{{ url('/contracts') }}">Contract</a></li>
-                </ul>
+            <div class="collapse navbar-collapse " id="app-navbar-collapse">
 
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Authentication Links -->
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                <!--------------Nav bar buttons and AsURent Home logo----------->
+                <ul class="nav nav-tabs">
+
+                  <li role="presentation" class="active"><a class="navbar-brand" href="{{ url('/') }}">AsURent</a></li>
+                  <li role="presentation"><a href="{{ url('/home') }}">Home</a></li>
+                  <li role="presentation"><a href="{{ route('lalatask') }}">Tasks</a></li>
+                  <li role="presentation"><a href="{{ url('/contracts') }}">Contract</a></li>
+                  
+                   @if (Auth::guest())
+                   <div class="shiftRight">
+                        <li><a href="{{ url('/login') }}"><button type="button" class="btn btn-default">Login</button></a></li>
+                    </div>
+                    <div class="shiftRight">
+                        <li><a href="{{ url('/register') }}"><button type="button" class="btn btn-default">Register</button></a></li>
+                    </div>
                     @else
+                    <div class="shiftRight">
+                        
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
@@ -72,11 +77,18 @@
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
+                    </div>
                     @endif
                 </ul>
+
+                
             </div>
         </div>
     </nav>
+    
+    
+    
+    
 
     @yield('content')
 

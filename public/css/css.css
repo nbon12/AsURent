@@ -1,4 +1,19 @@
-.testchange {
-    
-    background-color: red;
+
+.navStyle {
+	background: linear-gradient(to right, black, #ab5403, black);
+}
+
+.shiftLeft {
+    float: left;
+}
+
+.shiftRight {
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+
+a {
+    color: white;
 }
