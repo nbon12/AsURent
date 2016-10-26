@@ -135,11 +135,11 @@
         var linkHandler = Plaid.create({
           selectAccount: true,
           env: 'tartan',
-          clientName: 'AsURent Welcome',
+          clientName: 'AsURent Rent Collectionz',
           //key: '{{env('PLAID_PUBLIC')}}',
           //key: 'test_key',
-          //key: 'a246cdb456f73cc16c8c6b9c813e4a',
-          key: 'test_key',
+          key: 'a246cdb456f73cc16c8c6b9c813e4a',
+          //key: 'test_key',
           product: 'auth',
           onLoad: function() {
             // The Link module finished loading.

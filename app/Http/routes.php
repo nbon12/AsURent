@@ -85,9 +85,10 @@ Route::group(['middleware' => ['web']], function() {
     Route::post('/plaidcurl', function(Request $request){
         //$temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
         
-        $public_token = $_POST['public_token1'];
-        $account_id = $_POST['account_id1'];
-        
+        $public_token = $_POST['public_token1'];//STORE THIS, it needs to be re-used when a user updates plaid password.
+        $account_id = $_POST['account_id1'];//
+        $client_id = env('PLAID_ID');
+        $plaid_secret = env('PLAID_SECRET');
         //dd($account_id . " --- " . $public_token);
         //return("HELLOOO??");
         //dd($public_token);
@@ -100,7 +101,7 @@ Route::group(['middleware' => ['web']], function() {
         $url = 'https://tartan.plaid.com/exchange_token';
         //$data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token, 'account_id' => $account_id);
         //$data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token);
-        $data = array('client_id' => 'test_id', 'secret' => 'test_secret', 'public_token' => $public_token, 'account_id' => $account_id);
+        $data = array('client_id' => $client_id, 'secret' => $plaid_secret, 'public_token' => $public_token, 'account_id' => $account_id);
         //dd($data);
         // use key 'http' even if you send the request to https://...
         $options = array(
@@ -119,9 +120,6 @@ Route::group(['middleware' => ['web']], function() {
         //var_dump($result);
         //$resp = curl_exec($curl);
         //dd($resp);
-        
-        
-        
     })->name('plaidcurlgeneric');
     Route::get('/plaidcurl2', function(Request $request){
         $public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
