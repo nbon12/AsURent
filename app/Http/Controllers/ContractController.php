@@ -71,13 +71,32 @@ class ContractController extends Controller
           "id" => $cont->id)
         );
         //get tenant and add to plan
-        $tenant = User::where('id', $cont->tenant_id)->first();
+        $tenant = User::where('email', $request->email)->first();
+        
         //dd($tenant->stripe_customer_id);
+        if($tenant == null){
+            $tenant = User::findOrFail($cont->tenant_id);
+        }
+        if($tenant == null)
+        {
+            return "couldn't find tenant";
+        }
+        //dd($tenant);
+        /*if($tenant->stripe_customer_id == null)
+        {
+            $customer = \Stripe\Customer::create(array(
+                "description" => "Contract Created Customer for AsURent",
+                "source" => null // will be replaced with btok...
+            ));
+            $tenant->stripe_customer_id = $customer->id;
+        }*/
+        //if ($customer->source == null)... get btok..
+        
         $subscription = \Stripe\Subscription::create(array(
-            "customer" => $tenant->stripe_customer_id,
+            "customer" => $tenant->stripe_customer_id, //customer needs a source object before this step
             "plan" => $plan->id
         ));
-        dd($subscription);
+        //dd($subscription);
         //
         //$customer = \Stripe\Customer::create(array(
         //  "description" => "Customer for AsURent",

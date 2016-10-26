@@ -71,47 +71,37 @@ Route::group(['middleware' => ['web']], function() {
         $secret = env('PLAID_SECRET');
         $public_token = $request->public_token;
         
-        
         //Okay, now we have the public_token...
         $user = User::where('email', 'tenantA@tenant.com')->first();
+        //we've got to send it in a CURL to the plaid servers, with the account_id,
+        //in order to get a btok. Then we store the btok into the $customer->source. 
         
-        Stripe\Stripe::setApiKey("sk_test_d2cVtC0PBfdGBjPAhHNJ4FeK");
-        $stripe_customer = Stripe\Customer::create(array(
-            "description" => $user->name,
-            "email" => $user->email
-        ));
-        
-        $user->stripe_id = $stripe_customer->id;
-        $user->save();
-        
-        
-        
-        
-        Stripe\Charge::create(array(
-            "amount" => 2999,
-            "currency" => "usd",
-            "customer" => $user->stripe_id,
-            "description" => "Payment for Invoice 4321"
-        ));
-        
-    })->name('get_customer_id');
+    })->name('plaidlink');
     Route::get('/chargetenantA', function(){
         $user = User::where('email', 'tenantA@tenant.com')->first();
-        
-        
         
     })->name('chargetenantA');
     
     Route::post('/plaidcurl', function(Request $request){
-        $temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
-        $public_token = $request->public_token; //from plaid_module
-        $account_id = $request->account_id; //from plaid module
+        //$temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
+        
+        $public_token = $_POST['public_token1'];
+        $account_id = $_POST['account_id1'];
+        
+        //dd($account_id . " --- " . $public_token);
+        //return("HELLOOO??");
+        //dd($public_token);
+        //$public_token = $request->public_token; //from plaid_module
+        //$account_id = $request->account_id; //from plaid module
         //dd($account_id . " ----" . $public_token);
         //dd($request->public_token);
         //dd($response->account_id);
+        //send our id and secret key to plaid in order to get a btok (bank token) from them
         $url = 'https://tartan.plaid.com/exchange_token';
-        $data = array('client_id' => env('PLAID_ID'), 'secret' => env('PLAID_SECRET'), 'public_token' => $public_token, 'account_id' => $account_id);
-        
+        //$data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token, 'account_id' => $account_id);
+        //$data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token);
+        $data = array('client_id' => 'test_id', 'secret' => 'test_secret', 'public_token' => $public_token, 'account_id' => $account_id);
+        //dd($data);
         // use key 'http' even if you send the request to https://...
         $options = array(
             'http' => array(
@@ -123,9 +113,9 @@ Route::group(['middleware' => ['web']], function() {
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         if ($result === FALSE) { /* Handle error */ }
-        //Okay now we have the access token, lets print it
+        //Okay now we have the access token(and hopefully btok, lets print it
+        //dd($account_id . " --- " . $public_token. "-\n" . $result);
         dd($result);
-        //dd($result);
         //var_dump($result);
         //$resp = curl_exec($curl);
         //dd($resp);
@@ -141,7 +131,7 @@ Route::group(['middleware' => ['web']], function() {
         //dd($request->public_token);
         //dd($response->account_id);
         $url = 'https://tartan.plaid.com/exchange_token';
-        $data = array('client_id' => env('PLAID_ID'), 'secret' => env('PLAID_SECRET'), 'public_token' => $public_token, 'account_id' => $account_id);
+        $data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token, 'account_id' => $account_id);
         
         // use key 'http' even if you send the request to https://...
         $options = array(

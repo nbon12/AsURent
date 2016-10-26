@@ -10,6 +10,7 @@ class SubscriptionController extends Controller
 {
     public function payOnce(Request $request, User $user)
      {
+        
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
         //Get the single token from the form...
         $token = $_POST['stripeToken'];
