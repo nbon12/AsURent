@@ -81,28 +81,18 @@ Route::group(['middleware' => ['web']], function() {
         $user = User::where('email', 'tenantA@tenant.com')->first();
         
     })->name('chargetenantA');
-    
+    /*
+     * This route is takes a public token and account id in a post request,
+       Then it makes a curl to the plaid server to get the prized btok,(stripe_bank_token)
+     */
     Route::post('/plaidcurl', function(Request $request){
-        //$temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
-        
         $public_token = $_POST['public_token1'];//STORE THIS, it needs to be re-used when a user updates plaid password.
         $account_id = $_POST['account_id1'];//
         $client_id = env('PLAID_ID');
         $plaid_secret = env('PLAID_SECRET');
-        //dd($account_id . " --- " . $public_token);
-        //return("HELLOOO??");
-        //dd($public_token);
-        //$public_token = $request->public_token; //from plaid_module
-        //$account_id = $request->account_id; //from plaid module
-        //dd($account_id . " ----" . $public_token);
-        //dd($request->public_token);
-        //dd($response->account_id);
-        //send our id and secret key to plaid in order to get a btok (bank token) from them
         $url = 'https://tartan.plaid.com/exchange_token';
-        //$data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token, 'account_id' => $account_id);
-        //$data = array('client_id' => env('PLAID_ID_TEST'), 'secret' => env('PLAID_SECRET_TEST'), 'public_token' => $public_token);
         $data = array('client_id' => $client_id, 'secret' => $plaid_secret, 'public_token' => $public_token, 'account_id' => $account_id);
-        //dd($data);
+        //dd($data); //should be able to see all our credentials...
         // use key 'http' even if you send the request to https://...
         $options = array(
             'http' => array(
@@ -114,11 +104,9 @@ Route::group(['middleware' => ['web']], function() {
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         if ($result === FALSE) { /* Handle error */ }
-        //Okay now we have the access token(and hopefully btok, lets print it
-        //dd($account_id . " --- " . $public_token. "-\n" . $result);
+        //Okay now we have the access token and btok.. now we have to extract it from the file and attach btok
+        //to a Customer object...
         dd($result);
-        //var_dump($result);
-        //$resp = curl_exec($curl);
         //dd($resp);
     })->name('plaidcurlgeneric');
     Route::get('/plaidcurl2', function(Request $request){
