@@ -44,12 +44,12 @@ Start:
 }
 
 #hContainer {
-    /*background: linear-gradient(to right, black, #ab5403, black);*/
-    background: radial-gradient(#ab5403, black);
+    background: linear-gradient(to right, black, black, #ab5403, black, black);
+    /*background: radial-gradient(#ab5403, black);*/
     position: absolute;
     height: 100%;
     width: 100%;
-    opacity: .70;
+    opacity: .4;
     top: 0;
 }
 
@@ -60,7 +60,14 @@ Start:
 }
 /*end of welcome page header image*/
 
-
+/*
+#wPage{
+    background-color: #e0e0e0;
+    height: 100%;
+    width: 100%;
+    color: #ab5403;
+}
+*/
 body {
-    background-color: black;
+    background-color: #e0e0e0;
 }
