@@ -1,4 +1,7 @@
-
+/*
+style for nav bar; nav bar goes throughout application
+Start:
+*/
 .navStyle {
 	background: linear-gradient(to right, black, #ab5403, black);
 }
@@ -13,7 +16,51 @@
     margin-top: 5px;
 }
 
+#dynLink:hover {
+    color: white;
+}
+
 
 a {
     color: white;
+}
+/*end of nav bar styling*/
+
+
+/*
+This is the welcome pages header back ground and opacity
+Start:
+*/
+#head {
+    background-image: url("../image/cabin.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    width: 100%;
+    height: 400px;
+    
+    top: 0px;
+}
+
+#hContainer {
+    /*background: linear-gradient(to right, black, #ab5403, black);*/
+    background: radial-gradient(#ab5403, black);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: .70;
+    top: 0;
+}
+
+.home {
+    position: relative;
+    margin-top: -20px;
+    
+}
+/*end of welcome page header image*/
+
+
+body {
+    background-color: black;
 }
