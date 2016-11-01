@@ -74,5 +74,10 @@
             </div>
         </div>
     </div>
+    
+    
+    <a href="https://connect.stripe.com/oauth/authorize?response_type=code&amp;client_id=ca_9MGL8irMFH4JKgfVhaDhkomxwa4j8En6&amp;scope=read_write" class="connect-button">
+        <span>Connect with Stripe</span>
+    </a>
     @endif
 @endsection
