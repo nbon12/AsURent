@@ -4,16 +4,33 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
+    use Billable;
+    //TODO: possible constructor to make all users automatically get a stripe customer id?
+    /*
+    public function __construct()
+    {
+        /*
+        \Stripe\Stripe::setApiKey(env("ASURENT_STRIPE_SECRET"));
+        $customer = \Stripe\Customer::create(array(
+          "description" => "Constructed Customer for AsURent",
+          "source" => null // will be replaced with btok...
+        ));
+        $user->'stripe_customer_id' = $customer->id;
+        $user->save();
+        
+    }
+    */
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'mailing_address'
+        'name', 'email', 'password', 'phone', 'mailing_address', 'stripe_customer_id'
     ];
 
     /**
@@ -43,6 +60,12 @@ class User extends Authenticatable
           //$contracts = DB::table('contracts')->where('tenant_id', '=', $this->id)->union($contractsll);
           
           return $contractsll;
+      }
+      public function subscribe($name, $amount)
+      {
+        dd($user = User::find(1));
+
+        $user->newSubscription('main', 'monthly')->create($creditCardToken);
       }
     
 }
