@@ -42,6 +42,8 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/contract/{contract}', 'ContractController@editForm');
     Route::post('/contract/{contract}', 'ContractController@edit');
     
+    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    
     /* Routes protected by authenication middleware */
     Route::group(['middleware' => ['auth']], function() {
         /* Route::get('/tasks', function() {
