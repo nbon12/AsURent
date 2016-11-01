@@ -118,6 +118,13 @@
                 </form>
             </div>
         </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
     </div>
     <!-- Plaid Stripe Link?-->
     Connect Bank Account:

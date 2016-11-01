@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'mail@asurent.com', 'name' => 'Trogdore the Burninator'],
+    'from' => ['address' => 'mail@asurent.com', 'name' => 'AsURent'],
 
     /*
     |--------------------------------------------------------------------------

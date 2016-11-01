@@ -64,6 +64,8 @@ Route::group(['middleware' => ['web']], function() {
             dd($code);
             
     
+    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    
     })->name('stripe_redirect_uri');
     Route::get('/testrequest', function(Request $request){
        return view('welcome');
