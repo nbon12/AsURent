@@ -45,7 +45,7 @@
                                     <form action="{{ url('invoices/'.$contract->id.'/'.$invoice->id) }}" method="POST">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}
-                                        <a href="{{ url('invoice/'.$contract->id.'/'.$invoice->id) }}" class="btn btn-success" role="button">
+                                        <a href="{{ url('invoice/'.$contract->id.'/'.$invoice->id) }}" class="btn btn-success bBtn" role="button">
                                             View
                                         </a>
                                         <button type="submit" id="delete-invoice-{{ $invoice->id }}" class="btn btn-danger">
