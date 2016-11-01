@@ -118,6 +118,15 @@ Route::group(['middleware' => ['web']], function() {
         //I guess.. I can put this into the contract. I can also attach it to the landlord right here?
         //attach to this user's customer object...
         $customer_id = Auth::user()->stripe_customer_id;
+        //dd($customer_id);
+        \Stripe\Stripe::setApiKey(env("ASURENT_STRIPE_SECRET"));
+        //begin attaching to CUSTOMER!
+        $customer = \Stripe\Customer::retrieve($customer_id);
+        $customer->source = $stripe_bank_account_token;
+        $customer->save();
+        //$user = Auth::user()
+        //return view('welcome')->with();
+        //end attaching to customer
         //dd($result);
         //dd($resp);
     })->name('plaidcurlgeneric');
