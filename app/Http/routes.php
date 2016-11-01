@@ -107,9 +107,17 @@ Route::group(['middleware' => ['web']], function() {
         if ($result === FALSE) { /* Handle error */dd("Could not get stripe_bank_token from Plaid D:!"); }
         //Okay now we have the access token and btok.. now we have to extract it from the file and attach btok
         //to a Customer object...
+        //Extracting from JSON object...
+        $json_obj = json_decode($result);
+        //dd($json_obj);
+        //dd($json_obj->{'stripe_bank_account_token'}); //
+        $stripe_bank_account_token = $json_obj->{'stripe_bank_account_token'};
+        $plaid_access_token = $json_obj->{'access_token'};
+        //dd($stripe_bank_account_token . "\n". $plaid_access_token);
+        //end extract from JSON object...
         //I guess.. I can put this into the contract. I can also attach it to the landlord right here?
         //attach to this user's customer object...
-        $user = Auth::user()->name;
+        $customer_id = Auth::user()->stripe_customer_id;
         //dd($result);
         //dd($resp);
     })->name('plaidcurlgeneric');
