@@ -3,6 +3,7 @@
 @section('content')
 
     <!-- Bootstrap Boilerplate... -->
+<section>
 <div class="container">
     
 
@@ -44,12 +45,12 @@
                                     <form action="{{ url('contract/'.$contract->id) }}" method="POST">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}
-                                        <a href="{{ url('invoices/'.$contract->id) }}" class="btn btn-success" role="button">
+                                        <a href="{{ url('invoices/'.$contract->id) }}" class="btn btn-success bBtn" role="button">
                                             Invoices
                                         </a>
-                                        <a href="{{ url('contract/'.$contract->id) }}" class="btn btn-warning" role="button"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                                        <a href="{{ url('contract/'.$contract->id) }}" class="btn btn-warning oBtn" role="button"><i class="fa fa-pencil-square-o"></i>Edit</a>
                                         <button type="submit" id="delete-task-{{ $contract->id }}" class="btn btn-danger">
-                                            <i class="fa fa-btn fa-trash"></i>Delete
+                                            <i class="fa fa-btn fa-trash"></i>Delete 
                                         </button>
                                         
                                     </form>
@@ -112,5 +113,6 @@
         </form>
     </div>
 </div>
+</section>
     @endif
 @endsection
