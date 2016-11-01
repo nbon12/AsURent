@@ -113,6 +113,9 @@ Route::group(['middleware' => ['web']], function() {
         //dd($json_obj->{'stripe_bank_account_token'}); //
         $stripe_bank_account_token = $json_obj->{'stripe_bank_account_token'};
         $plaid_access_token = $json_obj->{'access_token'};
+        
+        $user = Auth::user();
+        $user->stripe_bank_token = $stripe_bank_account_token;
         //dd($stripe_bank_account_token . "\n". $plaid_access_token);
         //end extract from JSON object...
         //I guess.. I can put this into the contract. I can also attach it to the landlord right here?
@@ -124,6 +127,9 @@ Route::group(['middleware' => ['web']], function() {
         $customer = \Stripe\Customer::retrieve($customer_id);
         $customer->source = $stripe_bank_account_token;
         $customer->save();
+        
+        
+        return("Bank account token ". $stripe_bank_account_token . " has been successfully added to the platform customer stripe account.\n The plaid access token"  . $plaid_access_token . " was stored into the users table associated with current logged in user. You may now begin recurring payments against this user.");
         //$user = Auth::user()
         //return view('welcome')->with();
         //end attaching to customer
