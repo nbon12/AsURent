@@ -121,6 +121,8 @@ class ContractController extends Controller
          $contract -> base_rate = $request -> base_rate;
          
          $contract -> save();
+         //edit the stripe end too:
+         
          
          return redirect('/contracts');
      }

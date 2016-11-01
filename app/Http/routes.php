@@ -19,6 +19,9 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/', function() {
         return view('welcome');
     });
+    Route::get('/pay', function() {
+        return view('welcome2');
+    });
     
     Route::auth();
     
@@ -63,19 +66,10 @@ Route::group(['middleware' => ['web']], function() {
     
     })->name('stripe_redirect_uri');
     Route::get('/testrequest', function(Request $request){
-       //dd( $request); 
+       return view('welcome');
     });
     Route::post('/plaidlink', function(Request $request){
-        //dd($request);
-        $client_id = env('PLAID_ID');
-        $secret = env('PLAID_SECRET');
-        $public_token = $request->public_token;
-        
-        //Okay, now we have the public_token...
-        $user = User::where('email', 'tenantA@tenant.com')->first();
-        //we've got to send it in a CURL to the plaid servers, with the account_id,
-        //in order to get a btok. Then we store the btok into the $customer->source. 
-        
+        return view('welcome');
     })->name('plaidlink');
     Route::get('/chargetenantA', function(){
         $user = User::where('email', 'tenantA@tenant.com')->first();
