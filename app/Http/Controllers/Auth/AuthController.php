@@ -66,7 +66,7 @@ class AuthController extends Controller
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
         //set this user as a customer of AsURent.
         $customer = \Stripe\Customer::create(array(
-            "description" => "Customer for james.smith@example.com",
+            "description" => "Customer for ASURENT created from Auth Controller...",
             "source" => null // to be changed to btok...
         ));
         return User::create([

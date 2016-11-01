@@ -5,8 +5,12 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Welcome</div>
-
+                <div class="panel-heading">Welcome 
+                @if (Auth::guest())
+                @else
+                {{Auth::user()->name}}
+                @endif</div>
+                
                 <div class="panel-body">
                     Your Application's Landing Page.
                 </div>
@@ -127,7 +131,7 @@
         data-env="tartan">
     </script>-->
   <!--  <form method="POST" action="plaidcurl">-->
-    <button id='linkButton'>Send public token and account_id to /plaidcurl</button>
+    <button id='linkButton'>Get Bank Token</button>
    <!-- </form>-->
 <!--<button id='bofaButton'>Open Link - Bank of America</button>-->
 <script src="https://cdn.plaid.com/link/stable/link-initialize.js"></script>

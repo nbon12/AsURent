@@ -86,6 +86,7 @@ Route::group(['middleware' => ['web']], function() {
        Then it makes a curl to the plaid server to get the prized btok,(stripe_bank_token)
      */
     Route::post('/plaidcurl', function(Request $request){
+        //dd(Auth::user()->email);
         $public_token = $_POST['public_token1'];//STORE THIS, it needs to be re-used when a user updates plaid password.
         $account_id = $_POST['account_id1'];//
         $client_id = env('PLAID_ID');
@@ -103,10 +104,13 @@ Route::group(['middleware' => ['web']], function() {
         );
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
-        if ($result === FALSE) { /* Handle error */ }
+        if ($result === FALSE) { /* Handle error */dd("Could not get stripe_bank_token from Plaid D:!"); }
         //Okay now we have the access token and btok.. now we have to extract it from the file and attach btok
         //to a Customer object...
-        dd($result);
+        //I guess.. I can put this into the contract. I can also attach it to the landlord right here?
+        //attach to this user's customer object...
+        $user = Auth::user()->name;
+        //dd($result);
         //dd($resp);
     })->name('plaidcurlgeneric');
     Route::get('/plaidcurl2', function(Request $request){
