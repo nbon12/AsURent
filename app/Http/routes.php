@@ -108,8 +108,9 @@ Route::group(['middleware' => ['web']], function() {
         $stripe_bank_account_token = $json_obj->{'stripe_bank_account_token'};
         $plaid_access_token = $json_obj->{'access_token'};
         
-        $user = Auth::user();
-        $user->stripe_bank_token = $stripe_bank_account_token;
+        //$user = Auth::user();
+        //$user->stripe_bank_token = $stripe_bank_account_token;
+        //$user->save();
         //dd($stripe_bank_account_token . "\n". $plaid_access_token);
         //end extract from JSON object...
         //I guess.. I can put this into the contract. I can also attach it to the landlord right here?
