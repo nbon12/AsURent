@@ -4,7 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script> <!-- Stripe.js -->
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+        crossorigin="anonymous">
+    </script>
     <title>Laravel</title>
 
     <!-- Fonts -->
