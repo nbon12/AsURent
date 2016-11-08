@@ -33,7 +33,7 @@
 					making it easier to stay organized and operate your 
 					apartment complex efficiently and hassle free.</p>
 				</div>
-			
+			<!-- new commentmmmm-->
 				<div class="smallBox row2">
 					<h2 class="white">Manage Tenants</h2>
 					<p>View all your tenants in one place. Add or 
