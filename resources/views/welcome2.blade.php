@@ -7,7 +7,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Welcome 
                 @if (Auth::guest())
-                <p>Please log in.</p>
                 @else
                 {{Auth::user()->name}}
                 @endif</div>

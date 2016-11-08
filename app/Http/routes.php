@@ -19,6 +19,9 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/', function() {
         return view('welcome');
     });
+    Route::get('/pay', function() {
+        return view('welcome2');
+    });
     
     Route::auth();
     
@@ -63,19 +66,10 @@ Route::group(['middleware' => ['web']], function() {
     
     })->name('stripe_redirect_uri');
     Route::get('/testrequest', function(Request $request){
-       //dd( $request); 
+       return view('welcome');
     });
     Route::post('/plaidlink', function(Request $request){
-        //dd($request);
-        $client_id = env('PLAID_ID');
-        $secret = env('PLAID_SECRET');
-        $public_token = $request->public_token;
-        
-        //Okay, now we have the public_token...
-        $user = User::where('email', 'tenantA@tenant.com')->first();
-        //we've got to send it in a CURL to the plaid servers, with the account_id,
-        //in order to get a btok. Then we store the btok into the $customer->source. 
-        
+        return view('welcome');
     })->name('plaidlink');
     Route::get('/chargetenantA', function(){
         $user = User::where('email', 'tenantA@tenant.com')->first();
@@ -114,8 +108,9 @@ Route::group(['middleware' => ['web']], function() {
         $stripe_bank_account_token = $json_obj->{'stripe_bank_account_token'};
         $plaid_access_token = $json_obj->{'access_token'};
         
-        $user = Auth::user();
-        $user->stripe_bank_token = $stripe_bank_account_token;
+        //$user = Auth::user();
+        //$user->stripe_bank_token = $stripe_bank_account_token;
+        //$user->save();
         //dd($stripe_bank_account_token . "\n". $plaid_access_token);
         //end extract from JSON object...
         //I guess.. I can put this into the contract. I can also attach it to the landlord right here?
