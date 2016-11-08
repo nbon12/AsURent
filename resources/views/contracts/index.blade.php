@@ -64,7 +64,7 @@
         </div>
         
         <div class="row">
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add"><i class="fa fa-plus"></i> Add Contract</button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add" id="conAddBtn"><i class="fa fa-plus"></i> Add Contract</button>
         </div>
         <div class="row panel-body collapse" id="add">
         <!-- Display Validation Errors -->
@@ -105,7 +105,7 @@
             <!-- Add Task Button -->
             <div class="form-group">
                 <div align="center">
-                    <button type="submit" class="btn btn-default">
+                    <button type="submit" class="btn btn-default" id="conSubBtn">
                         Submit
                     </button>
                 </div>

@@ -58,7 +58,7 @@
                   
                    @if (Auth::guest())
                    <div class="shiftRight">
-                        <li><a href="{{ url('/login') }}"><button type="button" class="btn btn-default">Login</button></a></li>
+                        <li><a href="{{ url('/login') }}"><button type="button" class="btn btn-default" id="Login">Login</button></a></li>
                     </div>
                     <div class="shiftRight">
                         <li><a href="{{ url('/register') }}"><button type="button" class="btn btn-default">Register</button></a></li>
@@ -72,7 +72,7 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                <li><a href="{{ url('/logout') }}" id="logOutBtn"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
                     </div>
