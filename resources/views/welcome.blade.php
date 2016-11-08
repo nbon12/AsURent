@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+
+<section class="home">
+    <div id="hContainer"></div>
+    <div>
+        
+        <div id="head">
+             <!--<h1 id="wMessage">Welcome to AsURent</h1> -->
+
         </div>
         
     </div>
