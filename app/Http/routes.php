@@ -123,8 +123,8 @@ Route::group(['middleware' => ['web']], function() {
         $customer->source = $stripe_bank_account_token;
         $customer->save();
         
-        
-        return("Bank account token ". $stripe_bank_account_token . " has been successfully added to the platform customer stripe account.\n The plaid access token"  . $plaid_access_token . " was stored into the users table associated with current logged in user. You may now begin recurring payments against this user.");
+        return view('welcome');
+        //return("Bank account token ". $stripe_bank_account_token . " has been successfully added to the platform customer stripe account.\n The plaid access token"  . $plaid_access_token . " was stored into the users table associated with current logged in user. You may now begin recurring payments against this user.");
         //$user = Auth::user()
         //return view('welcome')->with();
         //end attaching to customer
