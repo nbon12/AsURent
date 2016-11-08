@@ -122,14 +122,10 @@ Route::group(['middleware' => ['web']], function() {
         $customer = \Stripe\Customer::retrieve($customer_id);
         $customer->source = $stripe_bank_account_token;
         $customer->save();
-        
+        //take user back to welcome page.
         return view('welcome');
         //return("Bank account token ". $stripe_bank_account_token . " has been successfully added to the platform customer stripe account.\n The plaid access token"  . $plaid_access_token . " was stored into the users table associated with current logged in user. You may now begin recurring payments against this user.");
-        //$user = Auth::user()
-        //return view('welcome')->with();
-        //end attaching to customer
-        //dd($result);
-        //dd($resp);
+        
     })->name('plaidcurlgeneric');
     Route::get('/plaidcurl2', function(Request $request){
         $public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
