@@ -60,7 +60,11 @@
                   <li role="presentation"><a href="{{ url('/home') }}">Home</a></li>
                   <li role="presentation"><a href="{{ route('lalatask') }}">Tasks</a></li>
                   <li role="presentation"><a href="{{ url('/contracts') }}">Contract</a></li>
+                  @if (Auth::guest())
+                  @else
                   <li role="presentation"><a href="{{ url('/pay') }}">Connect Bank</a></li>
+                  @endif
+                  
                   
                    @if (Auth::guest())
                    <div class="shiftRight">
