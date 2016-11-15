@@ -65,7 +65,6 @@ class ContractController extends Controller
         $cont -> base_rate = $request -> base_rate;
         $cont -> landlord_id = $request -> user() -> id;
         $cont -> tenant_id = $cont->setTenant($request -> tenant);
-
         $cont -> save();
         //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
@@ -102,6 +101,8 @@ class ContractController extends Controller
             "customer" => $tenant->stripe_customer_id, //customer needs a source object before this step
             "plan" => $plan->id
         ));
+        $cont -> stripe_subscription_id = $subscription->id;
+        $cont -> save();
         //dd($subscription);
         //
         //$customer = \Stripe\Customer::create(array(
@@ -122,14 +123,25 @@ class ContractController extends Controller
      }
      public function edit(Request $request, Contract $contract)
      {
+         
          $contract -> name = $request -> name;
          $contract -> description = $request -> description;
-         $contract -> base_rate = $request -> base_rate;
+         //$contract -> base_rate = $request -> base_rate;
          
          $contract -> save();
          //edit the stripe end too:
-         
-         
+         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
+         $stripe_plan = \Stripe\Plan::retrieve($contract->id);
+         $stripe_plan->name = $request -> name;
+         //ammount is by design not editable.
+         if(strlen($request->statement_descriptor) <= 22)
+         {
+             $stripe_plan->statement_descriptor = $request->description;
+             //only edit statement descriptor if 22 or less characters.
+             //the client side should have checked to make sure it was 22 or less
+             //but in case it didn't, we check again here and if it is then throw it out.
+         }
+         $stripe_plan->save();
          return redirect('/contracts');
      }
      /**
@@ -149,8 +161,18 @@ class ContractController extends Controller
         */
         
         //TODO: authorization for contract manipulation
-        $this->authorize('destroy', $contract); 
+        $this->authorize('destroy', $contract);
+        //unsubscribe user from the Stripe plan:
+        \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
+        $stripe_subscription = \Stripe\Subscription::retrieve($contract->stripe_subscription_id);
+        $stripe_subscription->cancel();
+        //delete Stripe plan:
+        $stripe_plan = \Stripe\Plan::retrieve($contract->id);
+        $stripe_plan->delete();
+        //delete it from our database
         $contract->delete();
+        
+        
         
         return redirect('/contracts');
      }
