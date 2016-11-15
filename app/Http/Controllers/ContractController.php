@@ -70,7 +70,7 @@ class ContractController extends Controller
         //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
         $plan = \Stripe\Plan::create(array(
-          "amount" => $cont->base_rate,
+          "amount" => $cont->base_rate*100,
           "interval" => "month",
           "name" => $cont->name,
           "currency" => "usd",
