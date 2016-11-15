@@ -122,14 +122,25 @@ class ContractController extends Controller
      }
      public function edit(Request $request, Contract $contract)
      {
+         
          $contract -> name = $request -> name;
          $contract -> description = $request -> description;
-         $contract -> base_rate = $request -> base_rate;
+         //$contract -> base_rate = $request -> base_rate;
          
          $contract -> save();
          //edit the stripe end too:
-         
-         
+         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
+         $stripe_plan = \Stripe\Plan::retrieve($contract->id);
+         $stripe_plan->name = $request -> name;
+         //ammount is by design not editable.
+         if(strlen($request->statement_descriptor) <= 22)
+         {
+             $stripe_plan->statement_descriptor = $request->description;
+             //only edit statement descriptor if 22 or less characters.
+             //the client side should have checked to make sure it was 22 or less
+             //but in case it didn't, we check again here and if it is then throw it out.
+         }
+         $stripe_plan->save();
          return redirect('/contracts');
      }
      /**
