@@ -45,6 +45,9 @@ Route::group(['middleware' => ['web']], function() {
     
     Route::get('/contract/{contract}', 'ContractController@editForm');
     Route::post('/contract/{contract}', 'ContractController@edit');
+    
+    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    
     Route::post('/payOnce', 'SubscriptionController@payOnce');
     Route::get('/stripeconnect', function(){
             $error = Input::get("error");
@@ -62,7 +65,8 @@ Route::group(['middleware' => ['web']], function() {
             //TODO: store the input and set up with laravel Cashier.
             //TODO: set up laravel cashier
             dd($code);
-            
+    
+    
     
     })->name('stripe_redirect_uri');
     Route::get('/testrequest', function(Request $request){

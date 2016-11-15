@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use Illuminate\Http\Request;
 use App\Contract;
 use App\Http\Requests;
@@ -44,6 +45,11 @@ class ContractController extends Controller
      }
      public function store(Request $request)
      {
+         
+         /*Mail::raw("Hello from AsURent, we've got mail", function($message){
+            $message -> to('email@email.email'); 
+         });*/
+         
         //return redirect('/contracts');
         $this->validate($request, [
              'name' => 'required|max:255',
