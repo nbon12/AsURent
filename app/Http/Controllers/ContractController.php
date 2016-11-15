@@ -65,7 +65,6 @@ class ContractController extends Controller
         $cont -> base_rate = $request -> base_rate;
         $cont -> landlord_id = $request -> user() -> id;
         $cont -> tenant_id = $cont->setTenant($request -> tenant);
-
         $cont -> save();
         //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
@@ -102,6 +101,8 @@ class ContractController extends Controller
             "customer" => $tenant->stripe_customer_id, //customer needs a source object before this step
             "plan" => $plan->id
         ));
+        $cont -> stripe_subscription_id = $subscription->id;
+        $cont -> save();
         //dd($subscription);
         //
         //$customer = \Stripe\Customer::create(array(
@@ -160,8 +161,18 @@ class ContractController extends Controller
         */
         
         //TODO: authorization for contract manipulation
-        $this->authorize('destroy', $contract); 
+        $this->authorize('destroy', $contract);
+        //unsubscribe user from the Stripe plan:
+        \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
+        $stripe_subscription = \Stripe\Subscription::retrieve($contract->stripe_subscription_id);
+        $stripe_subscription->cancel();
+        //delete Stripe plan:
+        $stripe_plan = \Stripe\Plan::retrieve($contract->id);
+        $stripe_plan->delete();
+        //delete it from our database
         $contract->delete();
+        
+        
         
         return redirect('/contracts');
      }
