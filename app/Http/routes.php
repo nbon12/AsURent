@@ -31,6 +31,7 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/invoice/{contract}/{invoice}', 'InvoiceController@individual');
     Route::post('/invoice/{contract}/{invoice}', 'InvoiceController@storeItem');
     
+    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
     
     Route::delete('/invoice/{contract}/{invoice}/{item}', 'InvoiceController@destroyItem');
     
@@ -63,9 +64,6 @@ Route::group(['middleware' => ['web']], function() {
             //TODO: set up laravel cashier
             dd($code);
             
-    
-    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
-    
     })->name('stripe_redirect_uri');
     Route::get('/testrequest', function(Request $request){
        return view('welcome');
