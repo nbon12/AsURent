@@ -67,51 +67,9 @@ class ContractController extends Controller
         $cont -> tenant_id = $cont->setTenant($request -> tenant);
 
         $cont -> save();
-        //Make a new plan in Stripe...
-        \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
-        $plan = \Stripe\Plan::create(array(
-          "amount" => $cont->base_rate,
-          "interval" => "month",
-          "name" => $cont->name,
-          "currency" => "usd",
-          "id" => $cont->id)
-        );
-        //get tenant and add to plan
-        $tenant = User::where('email', $request->email)->first();
         
-        //dd($tenant->stripe_customer_id);
-        if($tenant == null){
-            $tenant = User::findOrFail($cont->tenant_id);
-        }
-        if($tenant == null)
-        {
-            return "couldn't find tenant";
-        }
-        //dd($tenant);
-        /*if($tenant->stripe_customer_id == null)
-        {
-            $customer = \Stripe\Customer::create(array(
-                "description" => "Contract Created Customer for AsURent",
-                "source" => null // will be replaced with btok...
-            ));
-            $tenant->stripe_customer_id = $customer->id;
-        }*/
-        //if ($customer->source == null)... get btok..
+        $this->makeplan($request, $cont);
         
-        $subscription = \Stripe\Subscription::create(array(
-            "customer" => $tenant->stripe_customer_id, //customer needs a source object before this step
-            "plan" => $plan->id
-        ));
-        //dd($subscription);
-        //
-        //$customer = \Stripe\Customer::create(array(
-        //  "description" => "Customer for AsURent",
-        //  "source" => null // will be replaced with btok...
-        //));
-        //dd($customer->id);
-        
-        
-        //dd($customer);
         return redirect('/contracts');
      }
      public function editForm(Request $request, Contract $contract)
@@ -153,5 +111,17 @@ class ContractController extends Controller
         $contract->delete();
         
         return redirect('/contracts');
+     }
+     public function makeplan(Request $request, Contract $cont)
+     {
+        $pk = User::where('id', $cont->landlord_id)->first()->stripe_access_token;
+        \Stripe\Stripe::setApiKey($pk);
+        $plan = \Stripe\Plan::create(array(
+          "amount" => $cont->base_rate*100,
+          "interval" => "month",
+          "name" => $cont->name,
+          "currency" => "usd",
+          "id" => $cont->id)
+        );
      }
 }

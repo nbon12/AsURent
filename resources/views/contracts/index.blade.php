@@ -52,6 +52,7 @@
                                         <button type="submit" id="delete-task-{{ $contract->id }}" class="btn btn-danger">
                                             <i class="fa fa-btn fa-trash"></i>Delete 
                                         </button>
+                                        <a href="{{ url('pay/'.$contract->id) }}" class="btn btn-success" role="button">Pay</a>
                                         
                                     </form>
                                 </td>

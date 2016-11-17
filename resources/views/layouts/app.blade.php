@@ -60,7 +60,7 @@
                   <li role="presentation"><a href="{{ url('/home') }}">Home</a></li>
                   <li role="presentation"><a href="{{ route('lalatask') }}">Tasks</a></li>
                   <li role="presentation"><a href="{{ url('/contracts') }}">Contract</a></li>
-                  <li role="presentation"><a href="{{ url('/pay') }}">Connect Bank</a></li>
+                  <li role="presentation"><a href="https://connect.stripe.com/oauth/authorize?response_type=code&amp;client_id={{env('STRIPE_CLIENT_ID')}}&amp;scope=read_write">Connect Stripe</a></li>
                   
                    @if (Auth::guest())
                    <div class="shiftRight">

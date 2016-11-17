@@ -19,9 +19,7 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('/', function() {
         return view('welcome');
     });
-    Route::get('/pay', function() {
-        return view('welcome2');
-    });
+    Route::get('/pay/{contract}', 'StripeController@index');
     
     Route::auth();
     
@@ -49,26 +47,10 @@ Route::group(['middleware' => ['web']], function() {
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
     
     Route::post('/payOnce', 'SubscriptionController@payOnce');
-    Route::get('/stripeconnect', function(){
-            $error = Input::get("error");
-            $error_description = Input::get("error_description");
-            $code = Input::get("code");
-            if($error != null || $code == null)
-            {   
-                //for now, we dump the error to view, but in the future we can pass this along to the view.
-                dd("The user was not authorized. " . $error . " " .  $error_description);
-                //if($error_description != null){ //pass error and error description along to view here }
-            }
-            //We have the authorization code, good.
-            //TODO: sanitize the Input? or does the input get method already sanitize it? 
-            //dd(Input::get("code"));
-            //TODO: store the input and set up with laravel Cashier.
-            //TODO: set up laravel cashier
-            dd($code);
+    Route::get('/stripeconnect', 'StripeController@connect');
     
+    Route::post('/checkout/{contract}', 'StripeController@checkout');
     
-    
-    })->name('stripe_redirect_uri');
     Route::get('/testrequest', function(Request $request){
        return view('welcome');
     });
@@ -172,7 +154,7 @@ Route::group(['middleware' => ['web']], function() {
         return "cashier_create route ended.";
     })->name('cashier_create');
     Route::get('/curltest', function(){
-        $temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0";
+        $temp_public_token = "50d9c0dab695a88ec8cc64faeae243235e62c4523951351366c1c395921d0592e4ed48930e724ec9ecac3968824fad7ae63fde04c372ccc6007fd4ffbb75a7c0"; 
         //$account_id = $response->account_id;
         $url = 'https://tartan.plaid.com/exchange_token';
         $data = array('client_id' => env('PLAID_ID'), 'secret' => env('PLAID_SECRET'), 'public_token' => $temp_public_token, 'account_id' => $account_id);
