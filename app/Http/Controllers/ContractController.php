@@ -65,9 +65,9 @@ class ContractController extends Controller
         $cont -> name = $request -> name;
         $cont -> description = $request -> description;
         $cont -> base_rate = $request -> base_rate;
-        $cont -> landlord_id = $request -> user() -> id;
+        $cont -> landlord_id = $request -> user() -> id;//in version1 landlord_id is innocuous
         //$cont -> tenant_id = $cont->setTenant($request -> tenant);
-        $cont -> tenant_id = Auth::user()->id; //version1
+        $cont -> tenant_id = Auth::user()->id; //in version1 all users are tenants.
         $cont -> save();
         //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
