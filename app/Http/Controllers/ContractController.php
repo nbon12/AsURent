@@ -54,6 +54,7 @@ class ContractController extends Controller
         //return redirect('/contracts');
         $this->validate($request, [
              'name' => 'required|max:255',
+             'description' => 'required|max:22',
         ]);
         
         /*$request->contracts()->create([
@@ -70,13 +71,16 @@ class ContractController extends Controller
         $cont -> save();
         //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
+        
         $plan = \Stripe\Plan::create(array(
           "amount" => $cont->base_rate*100,
           "interval" => "month",
           "name" => $cont->name,
           "currency" => "usd",
-          "id" => $cont->id)
-        );
+          "id" => $cont->id,
+          "statement_descriptor" => $request->description
+        ));
+        
         //get tenant and add to plan
         $tenant = User::where('email', $request->email)->first();
         
