@@ -130,6 +130,7 @@ class ContractController extends Controller
      public function edit(Request $request, Contract $contract)
      {
          
+         $this->authorize('edit', $contract);//only landlords can authorize edit of contract in version2.
          $contract -> name = $request -> name;
          $contract -> description = $request -> description;
          //$contract -> base_rate = $request -> base_rate;
