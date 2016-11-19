@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Contract;
 use App\Http\Requests;
 use App\User;
+use Auth;
 //
 //
 
@@ -64,7 +65,8 @@ class ContractController extends Controller
         $cont -> description = $request -> description;
         $cont -> base_rate = $request -> base_rate;
         $cont -> landlord_id = $request -> user() -> id;
-        $cont -> tenant_id = $cont->setTenant($request -> tenant);
+        //$cont -> tenant_id = $cont->setTenant($request -> tenant);
+        $cont -> tenant_id = Auth::user()->id; //version1
         $cont -> save();
         //Make a new plan in Stripe...
         \Stripe\Stripe::setApiKey(env('ASURENT_STRIPE_SECRET'));
