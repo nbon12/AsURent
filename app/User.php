@@ -61,11 +61,32 @@ class User extends Authenticatable
           
           return $contractsll;
       }
+      public function contractstenant()
+      {
+          $contracts = DB::table('contracts')->where('tenant_id', '=', $this->id);
+          return $contracts;
+      }
       public function subscribe($name, $amount)
       {
         dd($user = User::find(1));
 
         $user->newSubscription('main', 'monthly')->create($creditCardToken);
+      }
+      
+      public function invoices(){
+          $contracts = $this -> contracts() -> get();
+             $contract_ids = array();
+             foreach($contracts as $cont){
+                 array_push($contract_ids, $cont -> id);
+             }
+             return Invoice::whereIn('contract_id', $contract_ids)->get();
+      }
+      
+      public function isStripe(){
+          if($this->stripe_access_token){
+              return true;
+          }
+          return false;
       }
     
 }

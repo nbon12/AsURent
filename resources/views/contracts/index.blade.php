@@ -4,116 +4,179 @@
 
     <!-- Bootstrap Boilerplate... -->
 <section>
-<div class="container">
-    
-
-    <!-- TODO: Current Tasks -->
-    @if (count($contracts) >= 0)
-        <div class="row panel panel-default">
-            <div class="panel-heading">
-                Current Contracts
+        <!-- page content -->
+        <div class="" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Contracts <small>Leasing Agreements List</small></h3>
+              </div>
             </div>
+            
+            <div class="clearfix"></div>
 
-            <div class="panel-body">
-                <table class="table table-striped task-table">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Contracts</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
 
-                    <!-- Table Headings -->
-                    <thead>
-                        <th>Contract</th>
-                        <th>Description</th>
-                        <th>Rent</th>
-                        <th>&nbsp;</th>
-                    </thead>
+                    <p>Table with contracts you created, listings with progress and editing options</p>
 
-                    <!-- Table Body -->
-                    <tbody>
-                        @foreach($contracts as $contract)
-                            <tr>
-                                <!-- Task Name -->
-                                <td class="table-text">
-                                    <div>{{ $contract->name }}</div>
-                                </td>
-                                <td class="table-text">
-                                    <div>{{ $contract->description }}</div>
-                                </td>
-                                <td class="table-text">
-                                    <div>{{ $contract->base_rate }}</div>
-                                </td>
-
-                                <td>
-                                    <!-- Delete Button -->
-                                    <form action="{{ url('contract/'.$contract->id) }}" method="POST">
+                    <!-- start project list -->
+                    <table class="table table-striped projects">
+                      <thead>
+                        <tr>
+                          <th style="width: 20%">Address</th>
+                          <th>Description</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                          <th style="width: 20%">Options</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($contracts as $contract) 
+                        <tr>
+                          <td>
+                            <a>{{ $contract->name }}</a>
+                            <br />
+                            <small>Created {{$contract -> created_at}}</small>
+                          </td>
+                          <td>
+                            {{ $contract->description }}
+                          </td>
+                          <td>
+                            $ {{ $contract->base_rate }}
+                          </td>
+                          <td>
+                            <button type="button" class="btn btn-muted btn-xs">Status</button>
+                          </td>
+                          <td>
+                            <form action="{{ url('contract/'.$contract->id) }}" method="POST">
                                         {{csrf_field()}}
                                         {{method_field('DELETE')}}
-                                        <a href="{{ url('invoices/'.$contract->id) }}" class="btn btn-success bBtn" role="button">
-                                            Invoices
+                                        <a href="{{ url('invoices/'.$contract->id) }}" class="btn btn-xs btn-info" role="button"><i class="fa fa-folder"></i>
+                                            &nbspInvoices
                                         </a>
-                                        <a href="{{ url('contract/'.$contract->id) }}" class="btn btn-warning oBtn" role="button"><i class="fa fa-pencil-square-o"></i>Edit</a>
-                                        <button type="submit" id="delete-task-{{ $contract->id }}" class="btn btn-danger">
-                                            <i class="fa fa-btn fa-trash"></i>Delete 
+                                        <a href="{{ url('contract/'.$contract->id) }}" class="btn btn-xs btn-warning" role="button"><i class="fa fa-pencil-square-o"></i>&nbspEdit</a>
+                                        <button type="submit" id="delete-task-{{ $contract->id }}" class="btn btn-xs btn-danger">
+                                            <i class="fa fa-trash-o"></i>&nbspDelete 
                                         </button>
-                                        <a href="{{ url('pay/'.$contract->id) }}" class="btn btn-success" role="button">Pay</a>
                                         
                                     </form>
-                                </td>
-                                
-                            </tr>
+                          </td>
+                        </tr>
                         @endforeach
-                    </tbody>
-                </table>
+                      </tbody>
+                    </table>
+                    <!-- end project list -->
+
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        
         <div class="row">
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#add" id="conAddBtn"><i class="fa fa-plus"></i> Add Contract</button>
-        </div>
-        <div class="row panel-body collapse" id="add">
-        <!-- Display Validation Errors -->
-        @include('common.errors')
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>New Leasing Agreement</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form action="{{ url('/contracts/landlord') }}" method="POST" data-parsley-validate class="form-horizontal form-label-left">
+                        {{ csrf_field() }}
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" placeholder="Address" name="name">
+                        <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+                      </div>
 
-        <!-- New Task Form -->
-        <form action="{{ url('contracts') }}" method="POST" class="form-horizontal">
-            {{ csrf_field() }}
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="text" class="form-control" id="inputSuccess3" placeholder="Description" name="description">
+                        <span class="fa fa-pencil form-control-feedback right" aria-hidden="true"></span>
+                      </div>
 
-            <!-- Task Name -->
-            <div class="form-group">
-            <div class="form-row">
-                
-                
-                <div class="col-sm-6">
-                    <label for="contract-name" class="col-sm-12">Name:</label>
-                    <input type="text" name="name" id="contract-name" class="form-control">
-                </div>
-                
-                
-                <div class="col-sm-6">
-                    <label for="contract-description" class="col-sm-12">Description:</label>
-                    <input type="text" name="description" id="contract-description" class="form-control">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-sm-6">
-                    <label for="contract-tenant" class="col-sm-12">Tenant Email:</label>
-                    <input type="email" name="tenant" class="form-control" id="contract-tenant">
-                </div>
-                <div class="col-sm-6">
-                    <label for="contract-rent" class="col-sm-12">Monthly Rent:</label>
-                    <input type="number" name="base_rate" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="currency form-control" id="contract-base_rate">
-                </div>
-            </div>
-            </div>
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="email" class="form-control has-feedback-left" id="inputSuccess4" placeholder="Tenant Email" name="tenant">
+                        <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                      </div>
 
-            <!-- Add Task Button -->
-            <div class="form-group">
-                <div align="center">
-                    <button type="submit" class="btn btn-default" id="conSubBtn">
-                        Submit
-                    </button>
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <input type="number" min="0" step="0.01" class="form-control" id="inputSuccess5" placeholder="Monthly Rent" name="base_rate">
+                        <span class="fa fa-usd form-control-feedback right" aria-hidden="true"></span>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tenant Email</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="email" class="form-control" placeholder="Additional Tenant">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tenant Email</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="email" class="form-control" placeholder="Additional Tenant">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tenant Email</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="email" class="form-control" placeholder="Additional Tenant">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Tenant Email</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="email" class="form-control" placeholder="Additional Tenant">
+                        </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                          <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
-        </form>
-    </div>
-</div>
+        <!-- /page content -->
 </section>
-    @endif
 @endsection

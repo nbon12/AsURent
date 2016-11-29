@@ -2,27 +2,37 @@
 
 @section('content')
 
-<section class="home">
-    <div id="hContainer"></div>
-    <div>
-        
-        <div id="head">
-             <!--<h1 id="wMessage">Welcome to AsURent</h1> -->
-
-        </div>
-        
+<section>
+	<div class="row"></div>
+	<div class="row">
+	<div class="jumbotron">
+          <h1>AsURent</h1>
+          <p>The online rental collection web application that makes rent 
+	collection, contract, and tenant management fast, easy, and trouble free!</p>
     </div>
+    </div>
+    
+	<!-- top tiles -->
+          <div class="row tile_count">
+            <div class="col-md-4 col-sm-12 col-xs-12 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Total Users</span>
+              <div class="count">14</div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 tile_stats_count">
+              <span class="count_top"><i class="fa fa-file-text-o"></i> Total Contracts</span>
+              <div class="count">5</div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 tile_stats_count">
+              <span class="count_top"><i class="fa fa-indent"></i> Total Invoices</span>
+              <div class="count">45</div>
+            </div>
+          </div>
+<!-- /top tiles -->
 </section>
 
 <section id="contentWrap">
+	
 	<div class=" container container2"> <!--container-->
-		<div>
-			<div class="center smallBox">
-				<h2 class="white">Welcome to AsURent!</h2>
-				<p>The online rental collection web application that makes rent 
-				collection, contract, and tenant management fast, easy, and trouble free!</p>
-			</div>
-		</div>
 		
 			<div class="textCenter">
 				<div class="smallBox row2">

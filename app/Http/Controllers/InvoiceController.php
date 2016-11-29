@@ -8,7 +8,8 @@ use App\Contract;
 use App\User;
 use App\Http\Requests;
 use App\Item;
-
+use Illuminate\Support\Facades\DB;
+use DateTime;
 //
 //
 
@@ -40,11 +41,41 @@ class InvoiceController extends Controller
      public function index(Request $request, Contract $contract)
      {
          $inv = $contract->invoices()->get();
+         
+         foreach ($inv as $invoice) {
+             $items = $invoice->items()->get();
+             $total = 0;
+             foreach($items as $item)
+             {
+                 $total = $total + $item->value;
+             }
+             $invoice -> total = $total;
+             $tenant = User::findOrFail($contract->tenant_id);
+             $invoice -> tenant = $tenant -> name;
+         }
          return view('invoices.index', [
-             'invoices' => $inv,
-             'contract' => $contract
+             'invoices' => $inv
              ]);
              
+     }
+     public function all(Request $request)
+     {
+         $invoices = $request -> user() -> invoices();
+         foreach ($invoices as $invoice) {
+             $items = $invoice->items()->get();
+             $total = 0;
+             foreach($items as $item)
+             {
+                 $total = $total + $item->value;
+             }
+             $invoice -> total = $total;
+             $contract = DB::table('contracts')->where('id', '=', $invoice->contract_id)->first();
+             $tenant = User::findOrFail($contract->tenant_id);
+             $invoice -> tenant = $tenant -> name;
+         }
+         return view('invoices.index', [
+            'invoices' => $invoices
+         ]);
      }
      
      public function individual(Request $request, Contract $contract, Invoice $invoice)
@@ -55,6 +86,7 @@ class InvoiceController extends Controller
          {
              $total = $total + $item->value;
          }
+         $contract -> pk = $contract -> getPK();
          
          return view('invoices.individual',[
              'invoice' => $invoice,

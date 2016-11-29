@@ -1,108 +1,172 @@
-
 <html lang="en">
-<head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script> <!-- Stripe.js -->
-    <script
-        src="https://code.jquery.com/jquery-3.1.1.js"
-        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-        crossorigin="anonymous">
-    </script>
-    <title>Laravel</title>
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+    <title>AsURent | App</title>
 
-    <!-- Stylesss -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{asset('css/css.css')}}"/>
-    
-    <!--java script -->
-     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-     <script type="text/javascript" src="{{asset('js/site.js')}}"></script>
+    <!-- Bootstrap -->
+    <link href="{{asset("gent/vendors/bootstrap/dist/css/bootstrap.min.css")}}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{asset("gent/vendors/font-awesome/css/font-awesome.min.css")}}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{asset("gent/vendors/nprogress/nprogress.css")}}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{{asset("gent/vendors/iCheck/skins/flat/green.css")}}" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{{asset("gent/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css")}}" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{asset("gent/vendors/bootstrap-daterangepicker/daterangepicker.css")}}" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: 'Lato';
-        }
+    <!-- Custom Theme Style -->
+    <link href="{{asset("gent/build/css/custom.min.css")}}" rel="stylesheet">
+  </head>
 
-        .fa-btn {
-            margin-right: 6px;
-        }
-    </style>
-    
-</head>
-<body id="app-layout">
-    
-    <nav class="navbar navbar-default navbar-static-top navStyle">
-        <div>
-            <div class="navbar-header">
-
-                <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{{url('home')}}" class="site_title"><i class="fa fa-home"></i> <span>AsURent</span></a>
             </div>
 
-            <div class="collapse navbar-collapse " id="app-navbar-collapse">
+            <div class="clearfix"></div>
 
-                <!--------------Nav bar buttons and AsURent Home logo----------->
-                <ul class="nav nav-tabs">
+            <!-- menu profile quick info -->
+            <div class="profile">
+              <div class="profile_pic">
+                @if(Auth::guest())
+                <i class="fa-5x fa-question-circle"></i>
+                @else
+                <i class="fa-5x fa-user"></i>
+                @endif
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                @if (Auth::guest())
+                <h2>Guest</h2>
+                @else
+                <h2>{{ Auth::user()->name }}</h2>
+                @endif
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
 
-                  <li role="presentation" class="active"><a class="navbar-brand" href="{{ url('/') }}">AsURent</a></li>
-                  <li role="presentation"><a href="{{ url('/home') }}">Home</a></li>
-                  <li role="presentation"><a href="{{ route('lalatask') }}">Tasks</a></li>
-                  <li role="presentation"><a href="{{ url('/contracts') }}">Contract</a></li>
-                  <li role="presentation"><a href="https://connect.stripe.com/oauth/authorize?response_type=code&amp;client_id={{env('STRIPE_CLIENT_ID')}}&amp;scope=read_write">Connect Stripe</a></li>
-                  
-                   @if (Auth::guest())
-                   <div class="shiftRight">
-                        <li><a href="{{ url('/login') }}"><button type="button" class="btn btn-default" id="Login">Login</button></a></li>
-                    </div>
-                    <div class="shiftRight">
-                        <li><a href="{{ url('/register') }}"><button type="button" class="btn btn-default">Register</button></a></li>
-                    </div>
-                    @else
-                    <div class="shiftRight" id="dynLink">
-                        
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="dynLink">
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
+            <br />
 
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}" id="logOutBtn"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
-                            </ul>
-                        </li>
-                    </div>
-                    @endif
-                </ul>
-
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section" style="padding-top: 80px">
                 
+                <ul class="nav side-menu">
+                  <li><a href="{{url("/home")}}"><i class="fa fa-home"></i> Home</a>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> Leasing Agreements</a>
+                    <ul class="nav child_menu" style="display: hidden;">
+                      <li><a href="{{url("/contracts/landlord")}}">Landlord Contracts</a></li>
+                      <li><a href="{{url("/contracts/tenant")}}">Tenant Contracts</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="{{url("/invoices")}}"><i class="fa fa-clone"></i> Invoices</a>
+                  <li><a href="{{url("/stripe")}}"><i class="fa fa-credit-card"></i> Stripe</a>
+                </ul>
+              </div>
+
             </div>
+            <!-- /sidebar menu -->
+          </div>
         </div>
-    </nav>
-    
-    
-    <section>
-    
-    
-    
 
-    @yield('content')
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
 
-    <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-    
-</section>
-</body>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                     @if(Auth::guest())
+                <i class="fa-5x fa-question-circle"></i>&nbsp
+                @else
+                <i class="fa-5x fa-user"></i>&nbsp
+                @endif
+                    @if(Auth::guest())
+                    Login | Register
+                    @else
+                    {{Auth::user()->name}}
+                    @endif
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    
+                     @if (Auth::guest())
+                    <li><a href="{{ url('/login') }}"> Login</a></li>
+                    <li><a href="{{ url('/register') }}">Register</a></li>
+                    
+                    @else
+                    <li><a href="{{ url('/logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    @endif
+                  
+                  
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+              <section class="content">
+
+                @yield('content')
+          
+              </section>
+
+          <br />
+
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{{asset("gent/vendors/jquery/dist/jquery.min.js")}}"></script>
+    <!-- Bootstrap -->
+    <script src="{{asset("gent/vendors/bootstrap/dist/js/bootstrap.min.js")}}"></script>
+    <!-- FastClick -->
+    <script src="{{asset("gent/vendors/fastclick/lib/fastclick.js")}}"></script>
+    <!-- NProgress -->
+    <script src="{{asset("gent/vendors/nprogress/nprogress.js")}}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{{asset("gent/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js")}}"></script>
+    <!-- iCheck -->
+    <script src="{{asset("gent/vendors/iCheck/icheck.min.js")}}"></script>
+    <!-- DateJS -->
+    <script src="{{asset("gent/vendors/DateJS/build/date.js")}}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{{asset("gent/vendors/moment/min/moment.min.js")}}"></script>
+    <script src="{{asset("gent/vendors/bootstrap-daterangepicker/daterangepicker.js")}}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{{asset("gent/build/js/custom.min.js")}}"></script>
+
+  </body>
 </html>

@@ -28,5 +28,10 @@ class Contract extends Model
         else
             return 9000;
     }
+    
+    public function getPK()
+    {
+        return DB::table('users') -> where('id', '=', $this->landlord_id) -> first() -> stripe_publishable_key;
+    }
      
 }

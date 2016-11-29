@@ -15,15 +15,29 @@ use GuzzleHttp\Exception\RequestException;
 
 class StripeController extends Controller
 {
-    
-    public function index(Request $request, Contract $contract)
+    public function __construct()
     {
-        $pk = User::where('id', $contract->landlord_id)->first()->stripe_publishable_key;
-        $rate = $contract->base_rate * 100;
-        return view('welcome2', [
-             'pk' => $pk,
-             'rate' => $rate,
-             'contract' => $contract -> id
+        $this->middleware('auth');
+    }
+    public function index(Request $request)
+    {
+        $stripe = NULL;
+        if($request ->user()){
+        $stripe = $request -> user() -> isStripe();
+        }
+        $available = NULL;
+        $pending = NULL;
+        if($stripe){
+        \Stripe\Stripe::setApiKey($request -> user() -> stripe_access_token);
+
+        $balance = \Stripe\Balance::retrieve();
+        $available = $balance->available[0]->amount/100;
+        $pending = $balance->pending[0]->amount/100;
+        }
+        return view('stripe.index', [
+             'stripe' => $stripe,
+             'available' => $available,
+             'pending' => $pending
         ]);
              
     }
@@ -67,10 +81,24 @@ class StripeController extends Controller
         \Stripe\Stripe::setApiKey($pk);
         $customer = \Stripe\Customer::create(array(
             'email' => $request -> stripeEmail,
-            'source'  => $request -> stripeToken,
+            'source'  => $request -> pl,
             'plan' => $contract -> id
         ));
-        dd("check stripe I think we did a success");
+        return redirect("/stripe");
+    }
+    
+    public function individualCheckout(Request $request, Invoice $invoice){
+        $contract = $invoice -> contract();
+        dd($contract);
+        $pk = User::where('id', $contract->landlord_id)->first()->stripe_access_token;
+        \Stripe\Stripe::setApiKey($pk);
+        $charge = \Stripe\Charge::create(array(
+          "amount" => 2000,
+          "currency" => "usd",
+          "source" => "tok_197cW4IRPfaQXufGhAIwfgBs", // obtained with Stripe.js
+          "description" => "Charge for alexander.brown@example.com"
+        ));
+        return redirect("/stripe");
     }
     
 }

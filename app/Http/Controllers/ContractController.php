@@ -43,6 +43,16 @@ class ContractController extends Controller
              ]);
              
      }
+     public function tenant(Request $request)
+     {
+         $contr = $request->user()->contractstenant()->get();
+         foreach($contr as $c){
+             $c -> pk = $pk = User::where('id', $c->landlord_id)->first()->stripe_publishable_key;
+         }
+         return view('contracts.tenant', [
+             'contracts' => $contr,
+             ]);
+     }
      public function store(Request $request)
      {
          
@@ -70,7 +80,7 @@ class ContractController extends Controller
         
         $this->makeplan($request, $cont);
         
-        return redirect('/contracts');
+        return redirect('/contracts/landlord');
      }
      public function editForm(Request $request, Contract $contract)
      {
@@ -88,7 +98,7 @@ class ContractController extends Controller
          //edit the stripe end too:
          
          
-         return redirect('/contracts');
+         return redirect('/contracts/landlord');
      }
      /**
       * Destroy the given contract.
@@ -110,7 +120,7 @@ class ContractController extends Controller
         $this->authorize('destroy', $contract); 
         $contract->delete();
         
-        return redirect('/contracts');
+        return redirect('/contracts/landlord');
      }
      public function makeplan(Request $request, Contract $cont)
      {
